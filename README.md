@@ -6,4 +6,4 @@ A web application for financial supervisors.
 
 * [resources](resources) stores metadata and databases
 * [static](static) stores static files like `js` scripts
-
+* [templates](templates) stores html files
