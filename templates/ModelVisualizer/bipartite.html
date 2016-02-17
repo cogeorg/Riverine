@@ -1,0 +1,35 @@
+{% extends "layout.html"  %}
+
+{% block head %}
+    <style>
+    svg text{
+        font-size:14px;
+    }
+    rect{
+        shape-rendering:crispEdges;
+    }
+    </style>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/bipartite.js') }}"></script>
+{% endblock %}
+
+{% block body  %} <!-- main panel for model visualization -->
+            
+    <h2 class="page-header"><label id="lbl_page-header"></h2>
+
+    <script type="text/javascript">
+
+    page_header = conf_obj["model"]["visualizer"]["title"]["@value"];
+    if ( page_header == ""){
+        page_header = "Bipartite";
+    }
+    document.getElementById("lbl_page-header").innerHTML = page_header;
+    </script>    
+
+    <div id="div_svg_bipartite">
+        <svg id="svg_bipartite" width="130%" height="130%" viewBox="130 0 1200 1200" preserveAspectRatio="xMaxYMax"></svg> 
+    </div>
+
+    {{ js|safe }}
+
+
+{% endblock %} <!-- body block -->

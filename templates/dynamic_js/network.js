@@ -32,18 +32,10 @@
             visualization.nodes(modelData.nodes);                      
         }
         visualization.edges({
-          "arrows": 0,	
+          "arrows": 0,
           "value": modelData.edges
         })
         
-        //Timeline feature not yet supported for network graphs:
-        //See: https://github.com/alexandersimoes/d3plus/issues/64
-        //visualization.time({
-        //        "value": "date"//"date" 
-                //,"format": d3.time.format("%d/%m/%Y")
-        //        }) //"%d/%m/%Y"
-        //visualization.timeline({"value":true, "height": 30, "handles":true})
-
         visualization.height(500)
         visualization.width(700)
         visualization.draw() 

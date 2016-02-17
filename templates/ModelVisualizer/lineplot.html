@@ -1,0 +1,114 @@
+{% extends "layout.html"  %}
+
+{% block body  %} <!-- main panel for model visualization -->
+            
+    {{ js|safe }}
+
+    <h2 class="page-header">Line Plot</h2>
+    <div id="viz"></div>
+    <script type="text/javascript">
+        visualization.container("#viz") // container DIV to hold the visualization
+                     .data(org_modelData) // data to use with the visualization
+                     .type("line") // visualization type
+                     .id(_id.id) // key for which our data is unique on
+                     .text(_id.id) // key to use for display text
+                     .y({"value":_yaxis.id, "label":_yaxis.label}) // key to use for y-axis
+                     .x({"value":_xaxis.id, "label":_xaxis.label}) // key to use for x-axis
+                     .height(500) //set the height (in pixels) of the current output -default is 600
+                     .width(700)
+                     .color(_id.id)
+                     .legend({"value":true, "size":20, "icons":true});
+
+        if (_xaxis.id.toLowerCase() == "year"){
+                     visualization.time({"value": "year"})
+                     
+        }
+                     visualization.draw(); // render the visualization!
+    </script>    
+{% endblock %} <!-- body block -->
+
+{% block control_panel %}
+    {{js|safe}}
+    <div class="col-sm-4 col-md-3 right_sidebar">
+        <ul class="nav nav-sidebar">
+            <li style= "cursor:default" class="active"><a>Control Panel</a></li>
+        </ul>
+    
+        <p><strong><label id="lbl_category"></strong></p>
+        <select name="category_list" id="category_list" multiple="multiple" style="width:60px">
+        {% for _type in categories %}
+            <option value='{{ _type }}' selected>{{_type}}</option>
+        {% endfor %}
+        </select>
+
+        <div style="margin-top:5%">
+            <p><strong><label id="lbl_yaxis_range"></strong></p>	
+            <br/>
+            <div id="slider" style="width:98%; margin-top:5%"></div>
+            <div id="rangeLabels">
+                <label id="lbl_min" style="position: relative; left: 8px; margin-top:3%">Min</label>
+                <label id="lbl_max" style="position: relative; left: -4px; margin-top:3%;float: right;">Max</label>
+            </div>
+        </div>
+    	   
+        <div style="margin-left:45%; margin-top:10%; float:left">	
+            <button onclick="Draw()">Draw</button> 
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        document.getElementById("lbl_category").innerHTML = _id.label + ":";
+        document.getElementById("lbl_yaxis_range").innerHTML = _yaxis.label + ":";
+
+        $(document).ready(function(){
+
+            var a = Math.pow(10, Math.round(Math.log10(Math.abs(_max))));
+            var low =  Math.sign(_min) * Math.floor(_min/a) * a;
+        
+            if (_min < 0){
+                low = -1 * low;
+            }
+            var high = Math.sign(_max) * Math.ceil(_max/a) * a;
+        
+            document.getElementById("lbl_min").innerHTML = low;
+            document.getElementById("lbl_max").innerHTML = high;
+    
+            $("#slider").editRangeSlider({
+                            arrows:true, 
+                            bounds:{min: low, max: high}, 
+                            defaultValues:{min: _min, max: _max}
+                            //formatter:function(val){
+                            //  var value = Math.round(val * 5) / 5,
+                            //  decimal = value - Math.round(val);
+                            //  return decimal == 0 ? value.toString() + ".0" : value.toString();
+                            //}
+            });
+        });
+
+        <!-- select dropdown box -->
+        $(function(){
+            $("#category_list").multiselect({    		
+                selectedList: ({{ categories|tojson }}).length, 
+                selectedText: function(numChecked, numTotal, checkedItems){
+                    return numChecked + ' of ' + numTotal + ' selected';
+                }
+            });
+        });
+
+        <!-- Draw function for user interaction with model data -->
+        function Draw(){    
+            var rangeVal = $("#slider").editRangeSlider("values");
+            selected = $("select").val();
+            if (selected == null)
+                visualization.id({"solo":""});
+            else
+                visualization.id({"solo":selected});
+            visualization.y({"value":_yaxis.id, "label": _yaxis.label, "range":[rangeVal.min, rangeVal.max]})  
+            if (_xaxis.id.toLowerCase() == "year"){
+                visualization.time({"value": "year"})
+            }
+            visualization.draw()      // re-draw the visualization!
+        }
+    </script>
+
+{% endblock %} <!-- control panel block -->

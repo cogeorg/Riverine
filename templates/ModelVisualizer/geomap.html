@@ -1,0 +1,150 @@
+{% extends "layout.html"  %}
+
+{% if conf_obj and modelData %}
+
+
+{% block body  %} <!-- main panel for model visualization -->
+            
+    {{ js|safe }}
+
+    <h2 class="page-header">Geographic Map: <label id="lbl_mapHeading"></h2>
+    <div id="viz"></div>
+    <script type="text/javascript">
+
+        document.getElementById("lbl_mapHeading").innerHTML = categories[id_index]["label"];
+
+        make_viz(visualization, modelData);
+
+    </script>    
+{% endblock %} <!-- body block -->
+
+
+{% block control_panel %}
+    {{js|safe}}
+
+    <div class="col-sm-4 col-md-3 right_sidebar">
+        <ul class="nav nav-sidebar">
+            <li style= "cursor:default" class="active"><a>Control Panel</a></li>
+        </ul>
+
+        <div style="margin-top:5%">
+            <strong><label id="lbl_category"></strong>
+            <select name="type-list" style="width:150px">
+            {% for _type in categories %}
+                {% if _type['value'] == 0 %}
+                    <option value="{{ _type['value'] }}" selected="selected">{{_type['label']}}</option>
+                {% else %}
+                    <option value="{{ _type['value'] }}">{{_type['label']}}</option>
+                {% endif %}
+            {% endfor %}
+            </select>
+        </div>
+    
+        <div style="margin-top:7%">
+            <strong><label id="lbl_yaxis_range" style=""></strong>
+            <br/><br/>
+            <div id="slider" style="width:98%; margin-top:7%"></div>
+            <div id="rangeLabels">
+                <label id="lbl_min" style="position: relative; left: 8px; margin-top:3%">Min</label>
+                <label id="lbl_max" style="position: relative; left: -4px; margin-top:3%;float: right;">Max</label>
+            </div>
+        </div>
+
+        <div style="margin-left:25%; margin-top:5%; float:left">
+            <button onclick="Draw()">Update Visualization</button> 
+        </div>
+    </div>
+
+
+
+<script type="text/javascript">
+    <!-- select dropdown box -->
+    $(function(){
+        $("select").multiselect({
+            multiple: false,
+            header: "Select an option",
+            noneSelectedText: "Select an Option",
+            selectedList: 1,
+            click: function(event, ui){
+                id_index = ui.value;
+                update_slider();
+            }
+        });
+    });
+
+    function update_slider(){
+        _min = categories[id_index]["min"];
+        _max = categories[id_index]["max"];
+        
+        var a = Math.pow(10, Math.round(Math.log10(Math.abs(_max))));
+        var low =  Math.sign(_min) * Math.floor(_min/a) * a;
+
+        if (_min < 0){
+            low = -1 * low;
+        }
+        var high = Math.sign(_max) * Math.ceil(_max/a) * a;
+        if (_max < 0){
+            high = -1 * high;
+        }
+
+        //console.log(categories[id_index]["label"] + ":" + _min + ", " + _max + ". low = " + low + ", high = " + high);
+
+        document.getElementById("lbl_min").innerHTML = low;
+        document.getElementById("lbl_max").innerHTML = high;
+
+        document.getElementById("lbl_yaxis_range").innerHTML = categories[id_index]["label"] + " range:";
+
+        $("#slider").editRangeSlider("bounds", low, high);
+        $("#slider").editRangeSlider("values", _min, _max);
+        $("#slider").editRangeSlider("min", _min);
+        $("#slider").editRangeSlider("max", _max);
+    }
+
+    $(document).ready(function(){
+        document.getElementById("lbl_yaxis_range").innerHTML = categories[id_index]["label"] + " range:";
+        document.getElementById("lbl_category").innerHTML = "Visualize:";//categories[id_index]["label"] + ":";
+
+        var a = Math.pow(10, Math.round(Math.log10(Math.abs(_max))));
+        var low =  Math.sign(_min) * Math.floor(_min/a) * a;
+    
+        if (_min < 0){
+            low = -1 * low;
+        }
+        var high = Math.sign(_max) * Math.ceil(_max/a) * a;
+    
+        //console.log(categories[id_index]["label"] + ":" + _min + ", " + _max + ". low = " + low + ", high = " + high);
+    
+        document.getElementById("lbl_min").innerHTML = low;
+        document.getElementById("lbl_max").innerHTML = high;
+
+        $("#slider").editRangeSlider({
+                        arrows:true, 
+                        bounds:{min: low, max: high}, 
+                        defaultValues:{min: _min, max: _max}
+                        //formatter:function(val){
+                        //  var value = Math.round(val * 5) / 5,
+                        //  decimal = value - Math.round(val);
+                        //  return decimal == 0 ? value.toString() + ".0" : value.toString();
+                        //}
+        });
+    });
+
+    <!-- Draw function for user interaction with model data-->
+    function Draw(){   
+        selected = $("select").val();
+        if (selected != null){
+            id_index = selected = $("select").val();
+            var rangeVal = $("#slider").editRangeSlider("values");
+            document.getElementById("lbl_mapHeading").innerHTML = categories[id_index]["label"];
+            
+            //Filter the data for the corresponding range
+            data = filter_data(modelData, categories[id_index]["key"], rangeVal);
+            refresh_viz(visualization, data);
+        }
+        
+    }
+</script>
+        
+{% endblock %} <!-- control panel block -->
+
+{% endif %} <!-- end if: conf_obj -->

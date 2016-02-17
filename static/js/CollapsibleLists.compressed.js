@@ -80,4 +80,3 @@ _e.className+=" collapsibleList"+(_f?"Open":"Closed");
 }
 };
 }();
-

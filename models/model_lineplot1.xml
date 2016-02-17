@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="ISO-8859-15"?>
+
+<model>
+    <data>
+        <file value="models/model_lineplot1.csv"></file>
+        <column_names value="True"></column_names>
+        	<parameters>
+        	     <param id="year" label="Year" value="xaxis"></param>
+        	     <param id="value" label="Risk Score" value="yaxis"></param>
+        	     <param id="category" label="Bank" value="ID"></param>
+        	</parameters>
+        	<categories>
+        	     <category value="alpha" label="Alpha"></category>	
+        	     <category value="beta" label="Beta"></category>
+        	     <category value="gamma" label="Gamma"></category>
+        	</categories>
+    </data>
+    <visualizer>
+        <view type="line"></view>
+    </visualizer>
+</model>
+

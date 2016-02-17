@@ -1,0 +1,30 @@
+{% extends "layout.html"  %}
+
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/scatterplot.css') }}"/>
+<script src="{{ url_for('static', filename='js/d3.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/d3.legend.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/scatterplot.js') }}"></script>
+{% endblock %}
+
+{% block body  %} <!-- main panel for model visualization -->
+
+           
+    <h2 class="page-header"><label id="lbl_page-header"></h2>
+
+    <script type="text/javascript">
+        page_header = conf_obj["model"]["visualizer"]["title"]["@value"];
+        if ( page_header == ""){
+            page_header = "Scatter Plot";
+        }
+        document.getElementById("lbl_page-header").innerHTML = page_header;
+
+    </script>    
+
+    <div id="div_svg_scatter">
+        <svg id="svg_scatter"></svg>
+    </div>
+
+    {{js|safe}}
+
+{% endblock %} <!-- body block -->

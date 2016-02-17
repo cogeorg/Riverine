@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="ISO-8859-15"?>
+
+<model>
+    <data>
+<file value="models/2015-07-17_dist.csv"></file>
+
+        <column_names value="True"></column_names>
+            <parameters>
+                <param id="source" label="Source" value=""></param>
+                <param id="target" label="Target" value=""></param>
+                <param id="strength" label="Strength" value=""></param>
+                <param id="date" label="Date" value=""></param>
+                <param id="type" label="Category" value=""></param>
+            </parameters>
+            <categories>
+                <category value="A" label="Portfolio Similarity"></category>
+                <category value="B" label=""></category>
+            </categories>
+        <node_config>
+            <node node_id="BCI" label="BCI" size="25.028667" x="563.6971" y="922.3048"></node>
+            <node node_id="STANLIB" label="STANLIB" size="54.017883" x="41.54676" y="101.95021"></node>
+            <node node_id="RECM" label="RECM" size="25.007202" x="485.96307" y="1041.0974"></node>
+            <node node_id="EFFICIENT" label="EFFICIENT" size="25.025406" x="696.3663" y="912.88794"></node>
+            <node node_id="SIM" label="SIM" size="26.844345" x="-291.49588" y="-114.51485"></node>
+            <node node_id="GRYPHON" label="GRYPHON" size="25.023628" x="189.35384" y="381.81262"></node>
+            <node node_id="TRUFFLE" label="TRUFFLE" size="25.017868" x="272.10745" y="876.01794"></node>
+            <node node_id="SELECT" label="SELECT" size="25.026915" x="817.5577" y="500.35245"></node>
+            <node node_id="DISCOVERY" label="DISCOVERY" size="25.0" x="402.8736" y="921.1916"></node>
+            <node node_id="OLD" label="OLD" size="38.70657" x="1162.0841" y="440.8047"></node>
+            <node node_id="MARRIOT" label="MARRIOT" size="25.02765" x="45.120525" y="377.70612"></node>
+            <node node_id="NEWFUNDS" label="NEWFUNDS" size="25.016804" x="446.4672" y="241.18695"></node>
+            <node node_id="PIC" label="PIC" size="25.02649" x="127.86098" y="936.0876"></node>
+            <node node_id="ALLAN" label="ALLAN" size="25.816248" x="-98.783806" y="1003.9176"></node>
+            <node node_id="COMMUNITY" label="COMMUNITY" size="25.028528" x="247.14906" y="237.84653"></node>
+            <node node_id="CADIZ" label="CADIZ" size="25.270668" x="739.9271" y="212.29253"></node>
+            <node node_id="OASIS" label="OASIS" size="25.444553" x="-189.5518" y="803.259"></node>
+            <node node_id="ABSA" label="ABSA" size="92.43567" x="24.892998" y="661.23834"></node>
+            <node node_id="ASHBURTON" label="ASHBURTON" size="25.207638" x="-171.32889" y="517.9759"></node>
+            <node node_id="MOMENTUM" label="MOMENTUM" size="35.713676" x="-553.19775" y="620.25977"></node>
+            <node node_id="PRIME" label="PRIME" size="25.030428" x="775.2761" y="796.0911"></node>
+            <node node_id="CARTESIAN" label="CARTESIAN" size="25.029516" x="592.6704" y="270.0057"></node>
+            <node node_id="GLACIER" label="GLACIER" size="25.48581" x="305.16708" y="-89.92321"></node>
+            <node node_id="COLOURFIELD" label="COLOURFIELD" size="25.017202" x="824.28516" y="659.25836"></node>
+            <node node_id="PRESCIENT" label="PRESCIENT" size="25.234703" x="514.91785" y="95.26568"></node>
+            <node node_id="HOLLARD" label="HOLLARD" size="25.018644" x="327.6971" y="320.044"></node>
+            <node node_id="CITADEL" label="CITADEL" size="25.02355" x="744.6521" y="368.21515"></node>
+            <node node_id="PRUDENTIAL" label="PRUDENTIAL" size="150.0" x="468.34924" y="607.0652"></node>
+            <node node_id="CORONATION" label="CORONATION" size="31.255653" x="1128.3877" y="1279.8507"></node>
+            <node node_id="INV" label="INV" size="25.031254" x="277.4957" y="1029.9747"></node>
+            <node node_id="PSG" label="PSG" size="25.238062" x="342.22183" y="90.76202"></node>
+            <node node_id="US" label="US" size="25.269142" x="-135.30836" y="346.68222"></node>
+            <node node_id="INVESTEC" label="INVESTEC" size="41.87936" x="749.0305" y="-115.53072"></node>
+            <node node_id="NEDBANK" label="NEDBANK" size="37.054905" x="213.48814" y="1389.5127"></node>
+        </node_config>
+    </data>
+    <visualizer>
+        <view type="network"></view>
+<title value="Portfolio Similarity (Euclidean distance)"></title>    </visualizer>
+</model>

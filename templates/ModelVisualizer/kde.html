@@ -1,0 +1,64 @@
+{% extends "layout.html"  %}
+
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/kde.css') }}"/>
+<script src="{{ url_for('static', filename='js/d3.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/d3.legend.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/kde.js') }}"></script>
+{% endblock %}
+
+{% block body  %} <!-- main panel for model visualization -->
+
+           
+    <h2 class="page-header"><label id="lbl_page-header"></h2>
+
+    <script type="text/javascript">
+        page_header = conf_obj["model"]["visualizer"]["title"]["@value"];
+        if ( page_header == ""){
+            page_header = "KDE Estimation";
+        }
+        document.getElementById("lbl_page-header").innerHTML = page_header;
+
+    </script>    
+
+    <div id="div_svg_kde">
+        <svg id="svg_kde"></svg>
+    </div>
+
+    {{js|safe}}
+
+{% endblock %} <!-- body block -->
+
+{% block control_panel %}
+    {{js|safe}}
+
+    <div class="col-sm-4 col-md-3 right_sidebar">
+        <ul class="nav nav-sidebar">
+            <li style= "cursor:default" class="active"><a>Control Panel</a></li>
+        </ul>
+
+       <div style="margin-left:0%; margin-top:0%; float:left">
+        <strong>Kernel:</strong>
+         <select id="kernel"> 
+          <option value="epanechnikov">Epanechnikov</option>
+          <option value="gaussian" selected>Gaussian</option>
+          <option value="uniform">Uniform</option>
+          <option value="cosine">Cosine</option>
+          <option value="logistic">Logistic</option>
+        </select> 
+       </div>
+
+       <div id="div_bandwidth" style="margin-left:0%; margin-top:3%; float:left">
+        <strong>Kernel Bandwidth:</strong><br>
+       </div>        
+
+        <div style="margin-left:0%; margin-top:7%; float:left">
+            <button onclick="BuildVisualization()">Build Visualization</button>
+        </div>
+    </div>
+
+<script type="text/javascript">
+    console.log(headers)
+</script>
+        
+{% endblock %} <!-- control panel block -->

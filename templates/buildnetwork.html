@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+</head>
+<body>
+  {% extends "layout.html" %} {% block body %} <!-- main panel for model visualization -->
+  <h2 class="page-header"><label id="lbl_page-header">Generate Network Graph</label></h2><label id="lbl_page-header"><br>
+  <strong></strong></label>
+  <form action="{{%20url_for('debug_mode')%20}}" enctype="multipart/form-data" id="network_form" method="post" name="network_form">
+    <label id="lbl_page-header"><strong>Num Nodes:<input id="nNodes" name="nNodes" size="5" type="text" value="10"><br>
+    Num Edges:<input id="nEdges" name="nEdges" size="5" type="text" value="45"></strong></label>
+    <p><label id="lbl_page-header"><strong>Node Size:</strong></label></p><label id="lbl_page-header"><strong>Min:<input id="minSize" name="minSize" size="2" type="text" value="1"> Max:<input id="maxSize" name="maxSize" size="2" type="text" value="30"></strong></label>
+    <p><label id="lbl_page-header"><strong>Edge Weights:</strong></label></p><label id="lbl_page-header"><strong>Min:<input id="minStrength" name="minStrength" size="2" type="text" value="1"> Max:<input id="maxStrength" name="maxStrength" size="2" type="text" value="10"></strong></label>
+    <p><label id="lbl_page-header"><strong>Edge Types (categories:)</strong></label></p>
+    <p></p>
+    <p><label id="lbl_page-header"><strong></strong></label></p>
+    <div style="float:left;">
+      <label id="lbl_page-header"><strong><input id="newItem" type="text" value="Type A"> <input id="add" type="button" value="=&gt;"> <select id="sel_edgeTypes" multiple="multiple" name="sel_edgeTypes" size="5" title="Edge Types">
+        </select></strong></label>
+    </div><label id="lbl_page-header"><strong><br>
+    <br>
+    <br>
+    <br></strong></label>
+    <p><label id="lbl_page-header"><strong>Generate node positions on: <input checked name="nodePosition" type="radio" value="server">server-side <input name="nodePosition" type="radio" value="client">client-side</strong></label></p><label id="lbl_page-header"><strong></strong></label>
+    <p><label id="lbl_page-header"><strong><input type="submit" value="Build Network"></strong></label></p><label id="lbl_page-header"><strong><input id="edgeTypes" name="edgeTypes" type="hidden"></strong></label>
+  </form><label id="lbl_page-header">
+  <script>
+    $("#network_form").submit(function(){
+        var edgeTypes = $("select").multiselect().val();
+        nNodes = parseInt($("#nNodes").val())
+        //maximum possible edges in a directed, symmetric network graph 
+        maxEdges = (nNodes-1)/2 * (nNodes);
+        if (parseInt($("#nEdges").val()) > maxEdges){
+            alert("Maximum possible edges in a directed, symmetric network graph for " + nNodes + " nodes is " + maxEdges );
+            $("#nEdges").val(maxEdges);
+            return false;
+        } 
+        //check if Edge Type data is populated!      
+        if (edgeTypes != null){
+            $("#edgeTypes").val(edgeTypes)
+        } else {
+            alert("No entries for Edge Types (categories)!")
+            return false;
+        }
+        return true;
+    });
+
+  $(function(){
+    var el = $("select").multiselect(),
+
+        newItem = $("#newItem");
+
+    
+  $("#add").click(function(){
+    //console.log(newItem.val())
+    var v = newItem.val()
+    var opt = $('<option />', {value: v, text: v, selected: true});
+             opt.appendTo( el );
+        
+    el.multiselect("refresh");
+    });
+  });
+  </script> {%endblock%}</label>
+</body>
+</html>

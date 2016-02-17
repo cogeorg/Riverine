@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="ISO-8859-15"?>
+
+<model>
+    <data>
+        <file value="models/model_candlestick.csv"></file>
+        <column_names value="True"></column_names>
+        	<parameters>
+        	     <param id="date" label="Date" value="null"></param>
+        	     <param id="open" label="Open" value="null"></param>
+        	     <param id="close" label="Close" value="null"></param>
+        	     <param id="low" label="Low" value="null"></param>
+        	     <param id="high" label="High" value="null"></param>
+        	</parameters>
+        	<categories>
+        	</categories>
+    </data>
+    <visualizer>
+        <view type="candlestick"></view>
+        <title value="Candlestick Chart"></title>
+	<ylabel value="Stock price"></ylabel>
+    </visualizer>
+</model>
+

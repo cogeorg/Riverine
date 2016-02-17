@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="ISO-8859-15"?>
+
+<model>
+    <data>
+        <file value="models/model_bipartite.csv"></file>
+        <column_names value="True"></column_names>
+        	<parameters>
+        	     <param id="Unit Trust" label="Unit Trust" value="null"></param>
+        	     <param id="Firm" label="Firm" value="null"></param>             
+        	     <param id="Exposures" label="SA Unit Trust Largest Exposures" value="id"></param>
+        	</parameters>
+        	<categories>
+        	</categories>
+    </data>
+    <visualizer>
+        <view type="bipartite"></view>
+        <title value="Bipartite Graph"></title>
+    </visualizer>
+</model>
+

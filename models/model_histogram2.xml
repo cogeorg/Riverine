@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="ISO-8859-15"?>
+
+<model>
+    <data>
+        <file value="models/model_histogram2.csv"></file>
+        <column_names value="True"></column_names>
+        	<parameters>
+        	     <param id="risk A" label="Risk Score A" value="null"></param>
+        	     <param id="risk B" label="Risk Score B" value="null"></param>        	     
+        	     <param id="risk C" label="Risk Score C" value="null"></param> 
+        	     <param id="risk D" label="Risk Score D" value="null"></param>         	             	     
+        	</parameters>
+        	<categories>
+        	</categories>
+    </data>
+    <visualizer>
+        <view type="histogram"></view>
+        <title value="Histogram Estimation"></title>
+		<xlabel value="Risk Score"></xlabel>
+		<ylabel value="P(Risk Score)"></ylabel>		
+    </visualizer>
+</model>
+

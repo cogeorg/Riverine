@@ -1674,126 +1674,126 @@ function decodeUtf8Char (str) {
 var lookup = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 
 ;(function (exports) {
-	'use strict';
+    'use strict';
 
   var Arr = (typeof Uint8Array !== 'undefined')
     ? Uint8Array
     : Array
 
-	var PLUS   = '+'.charCodeAt(0)
-	var SLASH  = '/'.charCodeAt(0)
-	var NUMBER = '0'.charCodeAt(0)
-	var LOWER  = 'a'.charCodeAt(0)
-	var UPPER  = 'A'.charCodeAt(0)
-	var PLUS_URL_SAFE = '-'.charCodeAt(0)
-	var SLASH_URL_SAFE = '_'.charCodeAt(0)
+    var PLUS   = '+'.charCodeAt(0)
+    var SLASH  = '/'.charCodeAt(0)
+    var NUMBER = '0'.charCodeAt(0)
+    var LOWER  = 'a'.charCodeAt(0)
+    var UPPER  = 'A'.charCodeAt(0)
+    var PLUS_URL_SAFE = '-'.charCodeAt(0)
+    var SLASH_URL_SAFE = '_'.charCodeAt(0)
 
-	function decode (elt) {
-		var code = elt.charCodeAt(0)
-		if (code === PLUS ||
-		    code === PLUS_URL_SAFE)
-			return 62 // '+'
-		if (code === SLASH ||
-		    code === SLASH_URL_SAFE)
-			return 63 // '/'
-		if (code < NUMBER)
-			return -1 //no match
-		if (code < NUMBER + 10)
-			return code - NUMBER + 26 + 26
-		if (code < UPPER + 26)
-			return code - UPPER
-		if (code < LOWER + 26)
-			return code - LOWER + 26
-	}
+    function decode (elt) {
+        var code = elt.charCodeAt(0)
+        if (code === PLUS ||
+            code === PLUS_URL_SAFE)
+            return 62 // '+'
+        if (code === SLASH ||
+            code === SLASH_URL_SAFE)
+            return 63 // '/'
+        if (code < NUMBER)
+            return -1 //no match
+        if (code < NUMBER + 10)
+            return code - NUMBER + 26 + 26
+        if (code < UPPER + 26)
+            return code - UPPER
+        if (code < LOWER + 26)
+            return code - LOWER + 26
+    }
 
-	function b64ToByteArray (b64) {
-		var i, j, l, tmp, placeHolders, arr
+    function b64ToByteArray (b64) {
+        var i, j, l, tmp, placeHolders, arr
 
-		if (b64.length % 4 > 0) {
-			throw new Error('Invalid string. Length must be a multiple of 4')
-		}
+        if (b64.length % 4 > 0) {
+            throw new Error('Invalid string. Length must be a multiple of 4')
+        }
 
-		// the number of equal signs (place holders)
-		// if there are two placeholders, than the two characters before it
-		// represent one byte
-		// if there is only one, then the three characters before it represent 2 bytes
-		// this is just a cheap hack to not do indexOf twice
-		var len = b64.length
-		placeHolders = '=' === b64.charAt(len - 2) ? 2 : '=' === b64.charAt(len - 1) ? 1 : 0
+        // the number of equal signs (place holders)
+        // if there are two placeholders, than the two characters before it
+        // represent one byte
+        // if there is only one, then the three characters before it represent 2 bytes
+        // this is just a cheap hack to not do indexOf twice
+        var len = b64.length
+        placeHolders = '=' === b64.charAt(len - 2) ? 2 : '=' === b64.charAt(len - 1) ? 1 : 0
 
-		// base64 is 4/3 + up to two characters of the original data
-		arr = new Arr(b64.length * 3 / 4 - placeHolders)
+        // base64 is 4/3 + up to two characters of the original data
+        arr = new Arr(b64.length * 3 / 4 - placeHolders)
 
-		// if there are placeholders, only get up to the last complete 4 chars
-		l = placeHolders > 0 ? b64.length - 4 : b64.length
+        // if there are placeholders, only get up to the last complete 4 chars
+        l = placeHolders > 0 ? b64.length - 4 : b64.length
 
-		var L = 0
+        var L = 0
 
-		function push (v) {
-			arr[L++] = v
-		}
+        function push (v) {
+            arr[L++] = v
+        }
 
-		for (i = 0, j = 0; i < l; i += 4, j += 3) {
-			tmp = (decode(b64.charAt(i)) << 18) | (decode(b64.charAt(i + 1)) << 12) | (decode(b64.charAt(i + 2)) << 6) | decode(b64.charAt(i + 3))
-			push((tmp & 0xFF0000) >> 16)
-			push((tmp & 0xFF00) >> 8)
-			push(tmp & 0xFF)
-		}
+        for (i = 0, j = 0; i < l; i += 4, j += 3) {
+            tmp = (decode(b64.charAt(i)) << 18) | (decode(b64.charAt(i + 1)) << 12) | (decode(b64.charAt(i + 2)) << 6) | decode(b64.charAt(i + 3))
+            push((tmp & 0xFF0000) >> 16)
+            push((tmp & 0xFF00) >> 8)
+            push(tmp & 0xFF)
+        }
 
-		if (placeHolders === 2) {
-			tmp = (decode(b64.charAt(i)) << 2) | (decode(b64.charAt(i + 1)) >> 4)
-			push(tmp & 0xFF)
-		} else if (placeHolders === 1) {
-			tmp = (decode(b64.charAt(i)) << 10) | (decode(b64.charAt(i + 1)) << 4) | (decode(b64.charAt(i + 2)) >> 2)
-			push((tmp >> 8) & 0xFF)
-			push(tmp & 0xFF)
-		}
+        if (placeHolders === 2) {
+            tmp = (decode(b64.charAt(i)) << 2) | (decode(b64.charAt(i + 1)) >> 4)
+            push(tmp & 0xFF)
+        } else if (placeHolders === 1) {
+            tmp = (decode(b64.charAt(i)) << 10) | (decode(b64.charAt(i + 1)) << 4) | (decode(b64.charAt(i + 2)) >> 2)
+            push((tmp >> 8) & 0xFF)
+            push(tmp & 0xFF)
+        }
 
-		return arr
-	}
+        return arr
+    }
 
-	function uint8ToBase64 (uint8) {
-		var i,
-			extraBytes = uint8.length % 3, // if we have 1 byte left, pad 2 bytes
-			output = "",
-			temp, length
+    function uint8ToBase64 (uint8) {
+        var i,
+            extraBytes = uint8.length % 3, // if we have 1 byte left, pad 2 bytes
+            output = "",
+            temp, length
 
-		function encode (num) {
-			return lookup.charAt(num)
-		}
+        function encode (num) {
+            return lookup.charAt(num)
+        }
 
-		function tripletToBase64 (num) {
-			return encode(num >> 18 & 0x3F) + encode(num >> 12 & 0x3F) + encode(num >> 6 & 0x3F) + encode(num & 0x3F)
-		}
+        function tripletToBase64 (num) {
+            return encode(num >> 18 & 0x3F) + encode(num >> 12 & 0x3F) + encode(num >> 6 & 0x3F) + encode(num & 0x3F)
+        }
 
-		// go through the array every three bytes, we'll deal with trailing stuff later
-		for (i = 0, length = uint8.length - extraBytes; i < length; i += 3) {
-			temp = (uint8[i] << 16) + (uint8[i + 1] << 8) + (uint8[i + 2])
-			output += tripletToBase64(temp)
-		}
+        // go through the array every three bytes, we'll deal with trailing stuff later
+        for (i = 0, length = uint8.length - extraBytes; i < length; i += 3) {
+            temp = (uint8[i] << 16) + (uint8[i + 1] << 8) + (uint8[i + 2])
+            output += tripletToBase64(temp)
+        }
 
-		// pad the end with zeros, but make sure to not forget the extra bytes
-		switch (extraBytes) {
-			case 1:
-				temp = uint8[uint8.length - 1]
-				output += encode(temp >> 2)
-				output += encode((temp << 4) & 0x3F)
-				output += '=='
-				break
-			case 2:
-				temp = (uint8[uint8.length - 2] << 8) + (uint8[uint8.length - 1])
-				output += encode(temp >> 10)
-				output += encode((temp >> 4) & 0x3F)
-				output += encode((temp << 2) & 0x3F)
-				output += '='
-				break
-		}
+        // pad the end with zeros, but make sure to not forget the extra bytes
+        switch (extraBytes) {
+            case 1:
+                temp = uint8[uint8.length - 1]
+                output += encode(temp >> 2)
+                output += encode((temp << 4) & 0x3F)
+                output += '=='
+                break
+            case 2:
+                temp = (uint8[uint8.length - 2] << 8) + (uint8[uint8.length - 1])
+                output += encode(temp >> 10)
+                output += encode((temp >> 4) & 0x3F)
+                output += encode((temp << 2) & 0x3F)
+                output += '='
+                break
+        }
 
-		return output
-	}
+        return output
+    }
 
-	exports.toByteArray = b64ToByteArray
-	exports.fromByteArray = uint8ToBase64
+    exports.toByteArray = b64ToByteArray
+    exports.fromByteArray = uint8ToBase64
 }(typeof exports === 'undefined' ? (this.base64js = {}) : exports))
 
 },{}],4:[function(require,module,exports){
@@ -6436,291 +6436,291 @@ It is apparently translated from http://stitchpanorama.sourceforge.net/Python/sv
 numeric.svd= function svd(A) {
     var temp;
 //Compute the thin SVD from G. H. Golub and C. Reinsch, Numer. Math. 14, 403-420 (1970)
-	var prec= numeric.epsilon; //Math.pow(2,-52) // assumes double prec
-	var tolerance= 1.e-64/prec;
-	var itmax= 50;
-	var c=0;
-	var i=0;
-	var j=0;
-	var k=0;
-	var l=0;
-	
-	var u= numeric.clone(A);
-	var m= u.length;
-	
-	var n= u[0].length;
-	
-	if (m < n) throw "Need more rows than columns"
-	
-	var e = new Array(n);
-	var q = new Array(n);
-	for (i=0; i<n; i++) e[i] = q[i] = 0.0;
-	var v = numeric.rep([n,n],0);
-//	v.zero();
-	
- 	function pythag(a,b)
- 	{
-		a = Math.abs(a)
-		b = Math.abs(b)
-		if (a > b)
-			return a*Math.sqrt(1.0+(b*b/a/a))
-		else if (b == 0.0) 
-			return a
-		return b*Math.sqrt(1.0+(a*a/b/b))
-	}
+    var prec= numeric.epsilon; //Math.pow(2,-52) // assumes double prec
+    var tolerance= 1.e-64/prec;
+    var itmax= 50;
+    var c=0;
+    var i=0;
+    var j=0;
+    var k=0;
+    var l=0;
+    
+    var u= numeric.clone(A);
+    var m= u.length;
+    
+    var n= u[0].length;
+    
+    if (m < n) throw "Need more rows than columns"
+    
+    var e = new Array(n);
+    var q = new Array(n);
+    for (i=0; i<n; i++) e[i] = q[i] = 0.0;
+    var v = numeric.rep([n,n],0);
+//    v.zero();
+    
+     function pythag(a,b)
+     {
+        a = Math.abs(a)
+        b = Math.abs(b)
+        if (a > b)
+            return a*Math.sqrt(1.0+(b*b/a/a))
+        else if (b == 0.0) 
+            return a
+        return b*Math.sqrt(1.0+(a*a/b/b))
+    }
 
-	//Householder's reduction to bidiagonal form
+    //Householder's reduction to bidiagonal form
 
-	var f= 0.0;
-	var g= 0.0;
-	var h= 0.0;
-	var x= 0.0;
-	var y= 0.0;
-	var z= 0.0;
-	var s= 0.0;
-	
-	for (i=0; i < n; i++)
-	{	
-		e[i]= g;
-		s= 0.0;
-		l= i+1;
-		for (j=i; j < m; j++) 
-			s += (u[j][i]*u[j][i]);
-		if (s <= tolerance)
-			g= 0.0;
-		else
-		{	
-			f= u[i][i];
-			g= Math.sqrt(s);
-			if (f >= 0.0) g= -g;
-			h= f*g-s
-			u[i][i]=f-g;
-			for (j=l; j < n; j++)
-			{
-				s= 0.0
-				for (k=i; k < m; k++) 
-					s += u[k][i]*u[k][j]
-				f= s/h
-				for (k=i; k < m; k++) 
-					u[k][j]+=f*u[k][i]
-			}
-		}
-		q[i]= g
-		s= 0.0
-		for (j=l; j < n; j++) 
-			s= s + u[i][j]*u[i][j]
-		if (s <= tolerance)
-			g= 0.0
-		else
-		{	
-			f= u[i][i+1]
-			g= Math.sqrt(s)
-			if (f >= 0.0) g= -g
-			h= f*g - s
-			u[i][i+1] = f-g;
-			for (j=l; j < n; j++) e[j]= u[i][j]/h
-			for (j=l; j < m; j++)
-			{	
-				s=0.0
-				for (k=l; k < n; k++) 
-					s += (u[j][k]*u[i][k])
-				for (k=l; k < n; k++) 
-					u[j][k]+=s*e[k]
-			}	
-		}
-		y= Math.abs(q[i])+Math.abs(e[i])
-		if (y>x) 
-			x=y
-	}
-	
-	// accumulation of right hand gtransformations
-	for (i=n-1; i != -1; i+= -1)
-	{	
-		if (g != 0.0)
-		{
-		 	h= g*u[i][i+1]
-			for (j=l; j < n; j++) 
-				v[j][i]=u[i][j]/h
-			for (j=l; j < n; j++)
-			{	
-				s=0.0
-				for (k=l; k < n; k++) 
-					s += u[i][k]*v[k][j]
-				for (k=l; k < n; k++) 
-					v[k][j]+=(s*v[k][i])
-			}	
-		}
-		for (j=l; j < n; j++)
-		{
-			v[i][j] = 0;
-			v[j][i] = 0;
-		}
-		v[i][i] = 1;
-		g= e[i]
-		l= i
-	}
-	
-	// accumulation of left hand transformations
-	for (i=n-1; i != -1; i+= -1)
-	{	
-		l= i+1
-		g= q[i]
-		for (j=l; j < n; j++) 
-			u[i][j] = 0;
-		if (g != 0.0)
-		{
-			h= u[i][i]*g
-			for (j=l; j < n; j++)
-			{
-				s=0.0
-				for (k=l; k < m; k++) s += u[k][i]*u[k][j];
-				f= s/h
-				for (k=i; k < m; k++) u[k][j]+=f*u[k][i];
-			}
-			for (j=i; j < m; j++) u[j][i] = u[j][i]/g;
-		}
-		else
-			for (j=i; j < m; j++) u[j][i] = 0;
-		u[i][i] += 1;
-	}
-	
-	// diagonalization of the bidiagonal form
-	prec= prec*x
-	for (k=n-1; k != -1; k+= -1)
-	{
-		for (var iteration=0; iteration < itmax; iteration++)
-		{	// test f splitting
-			var test_convergence = false
-			for (l=k; l != -1; l+= -1)
-			{	
-				if (Math.abs(e[l]) <= prec)
-				{	test_convergence= true
-					break 
-				}
-				if (Math.abs(q[l-1]) <= prec)
-					break 
-			}
-			if (!test_convergence)
-			{	// cancellation of e[l] if l>0
-				c= 0.0
-				s= 1.0
-				var l1= l-1
-				for (i =l; i<k+1; i++)
-				{	
-					f= s*e[i]
-					e[i]= c*e[i]
-					if (Math.abs(f) <= prec)
-						break
-					g= q[i]
-					h= pythag(f,g)
-					q[i]= h
-					c= g/h
-					s= -f/h
-					for (j=0; j < m; j++)
-					{	
-						y= u[j][l1]
-						z= u[j][i]
-						u[j][l1] =  y*c+(z*s)
-						u[j][i] = -y*s+(z*c)
-					} 
-				}	
-			}
-			// test f convergence
-			z= q[k]
-			if (l== k)
-			{	//convergence
-				if (z<0.0)
-				{	//q[k] is made non-negative
-					q[k]= -z
-					for (j=0; j < n; j++)
-						v[j][k] = -v[j][k]
-				}
-				break  //break out of iteration loop and move on to next k value
-			}
-			if (iteration >= itmax-1)
-				throw 'Error: no convergence.'
-			// shift from bottom 2x2 minor
-			x= q[l]
-			y= q[k-1]
-			g= e[k-1]
-			h= e[k]
-			f= ((y-z)*(y+z)+(g-h)*(g+h))/(2.0*h*y)
-			g= pythag(f,1.0)
-			if (f < 0.0)
-				f= ((x-z)*(x+z)+h*(y/(f-g)-h))/x
-			else
-				f= ((x-z)*(x+z)+h*(y/(f+g)-h))/x
-			// next QR transformation
-			c= 1.0
-			s= 1.0
-			for (i=l+1; i< k+1; i++)
-			{	
-				g= e[i]
-				y= q[i]
-				h= s*g
-				g= c*g
-				z= pythag(f,h)
-				e[i-1]= z
-				c= f/z
-				s= h/z
-				f= x*c+g*s
-				g= -x*s+g*c
-				h= y*s
-				y= y*c
-				for (j=0; j < n; j++)
-				{	
-					x= v[j][i-1]
-					z= v[j][i]
-					v[j][i-1] = x*c+z*s
-					v[j][i] = -x*s+z*c
-				}
-				z= pythag(f,h)
-				q[i-1]= z
-				c= f/z
-				s= h/z
-				f= c*g+s*y
-				x= -s*g+c*y
-				for (j=0; j < m; j++)
-				{
-					y= u[j][i-1]
-					z= u[j][i]
-					u[j][i-1] = y*c+z*s
-					u[j][i] = -y*s+z*c
-				}
-			}
-			e[l]= 0.0
-			e[k]= f
-			q[k]= x
-		} 
-	}
-		
-	//vt= transpose(v)
-	//return (u,q,vt)
-	for (i=0;i<q.length; i++) 
-	  if (q[i] < prec) q[i] = 0
-	  
-	//sort eigenvalues	
-	for (i=0; i< n; i++)
-	{	 
-	//writeln(q)
-	 for (j=i-1; j >= 0; j--)
-	 {
-	  if (q[j] < q[i])
-	  {
-	//  writeln(i,'-',j)
-	   c = q[j]
-	   q[j] = q[i]
-	   q[i] = c
-	   for(k=0;k<u.length;k++) { temp = u[k][i]; u[k][i] = u[k][j]; u[k][j] = temp; }
-	   for(k=0;k<v.length;k++) { temp = v[k][i]; v[k][i] = v[k][j]; v[k][j] = temp; }
-//	   u.swapCols(i,j)
-//	   v.swapCols(i,j)
-	   i = j	   
-	  }
-	 }	
-	}
-	
-	return {U:u,S:q,V:v}
+    var f= 0.0;
+    var g= 0.0;
+    var h= 0.0;
+    var x= 0.0;
+    var y= 0.0;
+    var z= 0.0;
+    var s= 0.0;
+    
+    for (i=0; i < n; i++)
+    {    
+        e[i]= g;
+        s= 0.0;
+        l= i+1;
+        for (j=i; j < m; j++) 
+            s += (u[j][i]*u[j][i]);
+        if (s <= tolerance)
+            g= 0.0;
+        else
+        {    
+            f= u[i][i];
+            g= Math.sqrt(s);
+            if (f >= 0.0) g= -g;
+            h= f*g-s
+            u[i][i]=f-g;
+            for (j=l; j < n; j++)
+            {
+                s= 0.0
+                for (k=i; k < m; k++) 
+                    s += u[k][i]*u[k][j]
+                f= s/h
+                for (k=i; k < m; k++) 
+                    u[k][j]+=f*u[k][i]
+            }
+        }
+        q[i]= g
+        s= 0.0
+        for (j=l; j < n; j++) 
+            s= s + u[i][j]*u[i][j]
+        if (s <= tolerance)
+            g= 0.0
+        else
+        {    
+            f= u[i][i+1]
+            g= Math.sqrt(s)
+            if (f >= 0.0) g= -g
+            h= f*g - s
+            u[i][i+1] = f-g;
+            for (j=l; j < n; j++) e[j]= u[i][j]/h
+            for (j=l; j < m; j++)
+            {    
+                s=0.0
+                for (k=l; k < n; k++) 
+                    s += (u[j][k]*u[i][k])
+                for (k=l; k < n; k++) 
+                    u[j][k]+=s*e[k]
+            }    
+        }
+        y= Math.abs(q[i])+Math.abs(e[i])
+        if (y>x) 
+            x=y
+    }
+    
+    // accumulation of right hand gtransformations
+    for (i=n-1; i != -1; i+= -1)
+    {    
+        if (g != 0.0)
+        {
+             h= g*u[i][i+1]
+            for (j=l; j < n; j++) 
+                v[j][i]=u[i][j]/h
+            for (j=l; j < n; j++)
+            {    
+                s=0.0
+                for (k=l; k < n; k++) 
+                    s += u[i][k]*v[k][j]
+                for (k=l; k < n; k++) 
+                    v[k][j]+=(s*v[k][i])
+            }    
+        }
+        for (j=l; j < n; j++)
+        {
+            v[i][j] = 0;
+            v[j][i] = 0;
+        }
+        v[i][i] = 1;
+        g= e[i]
+        l= i
+    }
+    
+    // accumulation of left hand transformations
+    for (i=n-1; i != -1; i+= -1)
+    {    
+        l= i+1
+        g= q[i]
+        for (j=l; j < n; j++) 
+            u[i][j] = 0;
+        if (g != 0.0)
+        {
+            h= u[i][i]*g
+            for (j=l; j < n; j++)
+            {
+                s=0.0
+                for (k=l; k < m; k++) s += u[k][i]*u[k][j];
+                f= s/h
+                for (k=i; k < m; k++) u[k][j]+=f*u[k][i];
+            }
+            for (j=i; j < m; j++) u[j][i] = u[j][i]/g;
+        }
+        else
+            for (j=i; j < m; j++) u[j][i] = 0;
+        u[i][i] += 1;
+    }
+    
+    // diagonalization of the bidiagonal form
+    prec= prec*x
+    for (k=n-1; k != -1; k+= -1)
+    {
+        for (var iteration=0; iteration < itmax; iteration++)
+        {    // test f splitting
+            var test_convergence = false
+            for (l=k; l != -1; l+= -1)
+            {    
+                if (Math.abs(e[l]) <= prec)
+                {    test_convergence= true
+                    break 
+                }
+                if (Math.abs(q[l-1]) <= prec)
+                    break 
+            }
+            if (!test_convergence)
+            {    // cancellation of e[l] if l>0
+                c= 0.0
+                s= 1.0
+                var l1= l-1
+                for (i =l; i<k+1; i++)
+                {    
+                    f= s*e[i]
+                    e[i]= c*e[i]
+                    if (Math.abs(f) <= prec)
+                        break
+                    g= q[i]
+                    h= pythag(f,g)
+                    q[i]= h
+                    c= g/h
+                    s= -f/h
+                    for (j=0; j < m; j++)
+                    {    
+                        y= u[j][l1]
+                        z= u[j][i]
+                        u[j][l1] =  y*c+(z*s)
+                        u[j][i] = -y*s+(z*c)
+                    } 
+                }    
+            }
+            // test f convergence
+            z= q[k]
+            if (l== k)
+            {    //convergence
+                if (z<0.0)
+                {    //q[k] is made non-negative
+                    q[k]= -z
+                    for (j=0; j < n; j++)
+                        v[j][k] = -v[j][k]
+                }
+                break  //break out of iteration loop and move on to next k value
+            }
+            if (iteration >= itmax-1)
+                throw 'Error: no convergence.'
+            // shift from bottom 2x2 minor
+            x= q[l]
+            y= q[k-1]
+            g= e[k-1]
+            h= e[k]
+            f= ((y-z)*(y+z)+(g-h)*(g+h))/(2.0*h*y)
+            g= pythag(f,1.0)
+            if (f < 0.0)
+                f= ((x-z)*(x+z)+h*(y/(f-g)-h))/x
+            else
+                f= ((x-z)*(x+z)+h*(y/(f+g)-h))/x
+            // next QR transformation
+            c= 1.0
+            s= 1.0
+            for (i=l+1; i< k+1; i++)
+            {    
+                g= e[i]
+                y= q[i]
+                h= s*g
+                g= c*g
+                z= pythag(f,h)
+                e[i-1]= z
+                c= f/z
+                s= h/z
+                f= x*c+g*s
+                g= -x*s+g*c
+                h= y*s
+                y= y*c
+                for (j=0; j < n; j++)
+                {    
+                    x= v[j][i-1]
+                    z= v[j][i]
+                    v[j][i-1] = x*c+z*s
+                    v[j][i] = -x*s+z*c
+                }
+                z= pythag(f,h)
+                q[i-1]= z
+                c= f/z
+                s= h/z
+                f= c*g+s*y
+                x= -s*g+c*y
+                for (j=0; j < m; j++)
+                {
+                    y= u[j][i-1]
+                    z= u[j][i]
+                    u[j][i-1] = y*c+z*s
+                    u[j][i] = -y*s+z*c
+                }
+            }
+            e[l]= 0.0
+            e[k]= f
+            q[k]= x
+        } 
+    }
+        
+    //vt= transpose(v)
+    //return (u,q,vt)
+    for (i=0;i<q.length; i++) 
+      if (q[i] < prec) q[i] = 0
+      
+    //sort eigenvalues    
+    for (i=0; i< n; i++)
+    {     
+    //writeln(q)
+     for (j=i-1; j >= 0; j--)
+     {
+      if (q[j] < q[i])
+      {
+    //  writeln(i,'-',j)
+       c = q[j]
+       q[j] = q[i]
+       q[i] = c
+       for(k=0;k<u.length;k++) { temp = u[k][i]; u[k][i] = u[k][j]; u[k][j] = temp; }
+       for(k=0;k<v.length;k++) { temp = v[k][i]; v[k][i] = v[k][j]; v[k][j] = temp; }
+//       u.swapCols(i,j)
+//       v.swapCols(i,j)
+       i = j       
+      }
+     }    
+    }
+    
+    return {U:u,S:q,V:v}
 };
 
 
@@ -33497,7 +33497,5 @@ module.exports = function() {
   });
   return vars.self;
 };
-
-
 
 },{"../core/console/print.coffee":54,"../core/methods/attach.coffee":78,"../object/validate.coffee":168,"./helpers/container.coffee":207,"./helpers/drawSteps.js":208,"./helpers/ui/message.js":240,"./methods/active.coffee":249,"./methods/aggs.coffee":250,"./methods/attrs.coffee":251,"./methods/axes.coffee":252,"./methods/background.coffee":253,"./methods/color.coffee":254,"./methods/cols.js":255,"./methods/config.coffee":256,"./methods/container.coffee":257,"./methods/coords.coffee":258,"./methods/csv.coffee":259,"./methods/data.coffee":260,"./methods/depth.coffee":261,"./methods/descs.coffee":262,"./methods/dev.coffee":263,"./methods/draw.js":264,"./methods/edges.js":265,"./methods/error.coffee":266,"./methods/focus.coffee":267,"./methods/font.coffee":268,"./methods/footer.coffee":269,"./methods/format.coffee":270,"./methods/height.coffee":271,"./methods/helpers/axis.coffee":272,"./methods/history.coffee":273,"./methods/icon.coffee":274,"./methods/id.coffee":275,"./methods/labels.coffee":276,"./methods/legend.coffee":277,"./methods/links.coffee":278,"./methods/margin.coffee":279,"./methods/messages.coffee":280,"./methods/nodes.coffee":281,"./methods/order.coffee":282,"./methods/shape.coffee":283,"./methods/size.coffee":284,"./methods/style.coffee":285,"./methods/temp.coffee":286,"./methods/text.coffee":287,"./methods/time.coffee":288,"./methods/timeline.coffee":289,"./methods/timing.coffee":290,"./methods/title.coffee":291,"./methods/tooltip.coffee":292,"./methods/total.coffee":293,"./methods/type.coffee":294,"./methods/ui.coffee":295,"./methods/width.coffee":296,"./methods/zoom.js":297,"./types/bar.coffee":298,"./types/box.coffee":299,"./types/bubbles.coffee":300,"./types/deprecated/chart.coffee":301,"./types/geo_map.coffee":302,"./types/line.coffee":312,"./types/network.js":313,"./types/paths.coffee":314,"./types/pie.coffee":315,"./types/rings.js":316,"./types/scatter.coffee":317,"./types/stacked.coffee":318,"./types/table.js":319,"./types/tree_map.coffee":320}]},{},[1]);

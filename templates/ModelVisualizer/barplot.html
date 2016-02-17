@@ -1,0 +1,94 @@
+{% extends "layout.html"  %}
+
+{% block body  %} <!-- main panel for model visualization -->
+            
+    {{ js|safe }}
+
+    <h2 class="page-header">Bar Plot</h2>
+    <div id="viz"></div>
+    <script type="text/javascript">
+        visualization.container("#viz") // container DIV to hold the visualization
+                     .data(org_modelData) // data to use with the visualization
+                     .type("bar") // visualization type
+                     .id(_id.id) // key for which our data is unique on
+                     .text(_id.id) // key to use for display text
+                     .y({"value":_yaxis.id, "label":_yaxis.label}) // key to use for y-axis
+                     .x({"value":_xaxis.id, "label":_xaxis.label, "stacked": document.getElementById("stacked").checked}) // key to use for x-axis
+                     .height(500) //set the height (in pixels) of the current output -default is 600
+                     .width(700)
+                     .color(_id.id)
+                     .legend({"value":true, "size":20, "icons":true});
+
+        if (_xaxis.id.toLowerCase() == "year" || _yaxis.id.toLowerCase() == "year"){
+                     visualization.time({"value": "year"})
+                     
+        }
+                     visualization.draw(); // render the visualization!
+    </script>    
+{% endblock %} <!-- body block -->
+
+{% block control_panel %}
+    {{js|safe}}
+    <div class="col-sm-4 col-md-3 right_sidebar">
+        <ul class="nav nav-sidebar">
+            <li style= "cursor:default" class="active"><a>Control Panel</a></li>
+        </ul>
+    
+        <p><strong><label id="lbl_category"></strong></p>
+        <select name="category_list" id="category_list" multiple="multiple" style="width:60px">
+        {% for _type in categories %}
+            <option value='{{ _type }}' selected>{{_type}}</option>
+        {% endfor %}
+        </select>
+
+        <div style="margin-top:5%;">
+            <form>
+                <input type="radio" id="stacked" name="stacked" value="true">Stacked
+                <input type="radio" id="stacked" name="stacked" value="false" checked>Grouped
+            </form>
+        </div>
+
+        <div style="margin-left:45%; margin-top:10%; float:left">
+            <button onclick="Draw()">Draw</button> 
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        document.getElementById("lbl_category").innerHTML = _id.label + ":";
+        
+        <!-- select dropdown box -->
+        $(function(){
+            $("#category_list").multiselect({
+                selectedList: ({{ categories|tojson }}).length, 
+                selectedText: function(numChecked, numTotal, checkedItems){
+                    return numChecked + ' of ' + numTotal + ' selected';
+                }
+            });
+        });
+
+        <!-- Draw function for user interaction with model data-->
+        function Draw(){    
+//            var rangeVal = $("#slider").editRangeSlider("values");
+            selected = $("select").val();
+            
+            if (selected == null)
+                visualization.id({"solo":""});
+            else
+                visualization.id({"solo":selected});
+
+            var stacked = document.getElementById("stacked").checked;
+            if (stacked) {
+                visualization.y({"value":_yaxis.id, "label": _yaxis.label})  
+            }
+            else {
+                visualization.y({"value":_yaxis.id, "label": _yaxis.label }) //, "range":[rangeVal.min, rangeVal.max]})  
+            }
+            visualization.x({"value":_xaxis.id, "label":_xaxis.label, "stacked": (document.getElementById("stacked").checked && displayStackedOption)}) 
+            if (_xaxis.id.toLowerCase() == "year" || _yaxis.id.toLowerCase() == "year"){
+                visualization.time({"value": "year"})
+            }
+            visualization.draw()      // re-draw the visualization!
+        }
+    </script>
+
+{% endblock %} <!-- control panel block -->

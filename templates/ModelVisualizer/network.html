@@ -1,0 +1,183 @@
+{% extends "layout.html"  %}
+
+{% block body  %} <!-- main panel for model visualization -->
+            
+    {{ js|safe }}
+
+    <h2 class="page-header"><label id="lbl_page-header"></h2>
+    <!-- background-color: #f5f5f -> grey -->
+    <div id="tmp" style="margin-left: auto; margin-right: auto; width: 100%; background-color: #f5f5f5;">
+        <div id="search_viz" style="margin-left: auto; margin-right: auto; width: 35%; background-color: #f5f5f5;"></div>
+    </div>
+    <br/>
+    <div id="network_viz"></div>
+    <script type="text/javascript">
+
+    page_header = ""
+    if (conf_obj != null){
+        page_header = conf_obj["model"]["visualizer"]["title"]["@value"];
+    } else{
+        page_header = "Network";
+    }
+
+    document.getElementById("lbl_page-header").innerHTML = page_header;
+    init_visualization();
+    init_searchNode_dropdown();
+    </script>    
+{% endblock %} <!-- body block -->
+
+
+{% block control_panel %}
+    {{js|safe}}
+
+    <div class="col-sm-4 col-md-3 right_sidebar">
+        <ul class="nav nav-sidebar">
+            <li style= "cursor:default" class="active"><a>Control Panel</a></li>
+        </ul>
+
+        <div style="margin-top:5%">
+            <p><strong><label>Nodes:</label></strong></p>
+            <select name="node_list" id="node_list" multiple="multiple" style="width:250px">
+            {% for _type in modelData['nodes'] %}
+                    <option value="{{ _type['node_id'] }}" selected>{{_type['label']}}</option>
+            {% endfor %}
+            </select>
+        </div>
+        
+        <div style="margin-top:5%">
+            <p><strong><label>Edge Types:</label></strong></p>
+            <select name="edgeType_list" id="edgeType_list" multiple="multiple" style="width:250px">
+            {% for _type in categories %}
+                    <option value="{{ _type['@value'] }}" selected>{{_type['@label']}}</option>
+            {% endfor %}
+            </select>
+        </div>
+    
+        <div style="margin-top:7%">
+            <p><strong><label style="">Edge Threshold:</label></strong></p>
+            <br/>
+            <div id="slider" style="width:98%; margin-top:7%"></div>
+            <div id="rangeLabels">
+                <label id="lbl_min" style="position: relative; left: 8px; margin-top:3%">Min</label>
+                <label id="lbl_max" style="position: relative; left: -4px; margin-top:3%;float: right;">Max</label>
+            </div>
+        </div>
+
+        <div id="toggle_edge_weights" style="margin-left:0%; margin-top:4%; float:left">
+            <strong><label>Display Edge Weights:</label></strong>
+            <input type="radio" name="edge_weights" value="true">True
+            <input type="radio" name="edge_weights" value="false" checked>False
+        </div>
+
+        <div style="margin-left:0%; margin-top:7%; float:left">
+            <button onclick="BuildVisualization()">Build Visualization</button> 
+        </div>
+    </div>
+
+
+
+<script type="text/javascript">
+
+    <!-- select dropdown box -->
+    $(function(){
+        $("#node_list").multiselect({
+            selectedList: ({{ modelData['nodes']|tojson }}).length, 
+            selectedText: function(numChecked, numTotal, checkedItems){
+                return numChecked + ' of ' + numTotal + ' selected';
+            },
+            click: function(event, ui){
+                update_slider();
+            }
+        });
+        $("#node_list").multiselect().multiselectfilter({
+            label: "Node:",
+            width: 150,
+            placeholder: "Enter node",
+            filter: function(event, matches){
+                // find the first matching checkbox
+                //var first_match = $( matches[0] );
+                console.log(matches);   
+
+                if( !matches.length ){
+                    //alert("no match found!");
+                    //return;
+                }
+            }
+        });
+    });
+    
+    $(function(){
+        $("#edgeType_list").multiselect({
+            multiple: true,
+            selectedText: function(numChecked, numTotal, checkedItems){
+                return numChecked + ' of ' + numTotal + ' selected';
+            },
+            selectedList: ({{ categories|tojson }}).length, 
+            click: function(event, ui){
+                update_slider();
+            }
+        });   
+
+        $("#edgeType_list").multiselect().multiselectfilter({
+            label: "Edge Type:",
+            width: 150,
+            placeholder: "Enter edge type",
+            filter: function(event, matches){
+                // find the first matching checkbox
+                //var first_match = $( matches[0] );
+                //console.log(matches);   
+
+                if( !matches.length ){
+                    //alert("no match found!");
+                    //return;
+                }
+            }
+        });
+    });
+
+    function update_slider(){
+        selected_nodeList = $("#node_list").val();
+        selected_edgeTypeList = $("#edgeType_list").val();
+    }
+
+    $(document).ready(function(){
+        range = getRange(modelData["edges"], "strength")
+        var a = Math.pow(10, Math.round(Math.log10(Math.abs(range.max))));
+        var low =  Math.sign(range.min) * Math.floor(range.min/a) * a;
+        var high = Math.sign(range.max) * Math.ceil(range.max/a) * a;
+        if (range.min < 0){
+            low = -1 * low;
+        }
+        if (range.max < 0){
+            high = -1 * high;
+        }
+    
+        document.getElementById("lbl_min").innerHTML = low;
+        document.getElementById("lbl_max").innerHTML = high;
+
+        $("#slider").editRangeSlider({
+            arrows:true, 
+            bounds:{min: low, max: high}, 
+            defaultValues:{min: low, max: range.max},
+            formatter:function(val){
+                var value = Math.round(val * 5) / 5,
+                decimal = value - Math.round(val);
+                return decimal == 0 ? value.toString() + ".0" : value.toString();
+            }
+        });
+    });
+
+    <!-- Build Visualization function for user interaction with model data-->
+    function BuildVisualization(){   
+        var selection = new Object;
+        selection.nodes = $("#node_list").val();
+        selection.edges = $("#edgeType_list").val();
+        selection.edgeRange = $("#slider").editRangeSlider("values");
+
+        //Filter the data for the corresponding selections
+        filtered = filter_data(selection);
+        refresh_viz(visualization, filtered, selection);            
+    }
+</script>
+        
+{% endblock %} <!-- control panel block -->

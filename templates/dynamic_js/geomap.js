@@ -1,5 +1,6 @@
-<script type="text/javascript" src="static/js/topojson.js"></script>
- 
+<script type="text/javascript" src="{{ url_for('static', filename='js/topojson.js') }}">
+</script>
+
 <script type="text/javascript">
     modelData = {{modelData|tojson|safe}};
     conf_obj = {{conf_obj|tojson|safe}};
@@ -26,7 +27,7 @@
         _visualization.text("country") // key to use for display text
         _visualization.coords(coords)
     
-        _visualization.height(500) 	//set the height (in pixels) of the current output -default is 600
+        _visualization.height(500) //set the height (in pixels) of the current output -default is 600
         _visualization.width(700)
         _visualization.legend({"value":true, "size":20, "icons":true})
         _visualization.draw() // render the visualization!

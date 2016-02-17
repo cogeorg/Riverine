@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="ISO-8859-15"?>
+
+<model>
+    <data>
+        <file value="models/model_lineplot2.csv"></file>
+        <column_names value="True"></column_names>
+        	<parameters>
+        	     <param id="year" label="Year" value="xaxis"></param>
+        	     <param id="value" label="Risk Score" value="yaxis"></param>
+        	     <param id="category" label="Bank" value="ID"></param>
+        	</parameters>
+        	<categories>
+        	     <category value="Bank A" label="Bank A"></category>	
+        	     <category value="Bank B" label="Bank B"></category>	
+        	     <category value="Bank C" label="Bank C"></category>	
+        	     <category value="Bank D" label="Bank D"></category>	
+        	     <category value="Bank E" label="Bank E"></category>	
+        	     <category value="Bank F" label="Bank F"></category>	
+        	     <category value="Bank G" label="Bank G"></category>	
+        	     <category value="Bank H" label="Bank H"></category>	
+        	     <category value="Bank I" label="Bank I"></category>	
+        	</categories>
+    </data>
+    <visualizer>
+        <view type="line"></view>
+    </visualizer>
+</model>
+
