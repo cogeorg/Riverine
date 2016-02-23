@@ -1,26 +1,25 @@
-<?xml version="1.0" encoding="ISO-8859-15"?>
+<?xml version="1.0" encoding="ISO-8859-15" ?>
 
 <model>
     <data>
         <file value="models/data/scatterplot2.csv"></file>
         <column_names value="True"></column_names>
-        	<parameters> ,,
-        	     <param id="petal length" label="Petal Length" value="xaxis"></param>
-        	     <param id="petal width" label="Petal Width" value="yaxis"></param>
-        	     <param id="species" label="Species" value="ID"></param>
-        	     <param id="weight" label="Weight" value="weight"></param>        	     
-        	</parameters>
-        	<categories>
-        	     <category value="setosa" label="Setosa"></category>	
-        	     <category value="versicolor" label="Versicolor"></category>
-        	     <category value="virginica" label="Virginica"></category>
-        	</categories>
+        <parameters> ,,
+            <param id="petal length" label="Petal Length" value="xaxis"></param>
+            <param id="petal width" label="Petal Width" value="yaxis"></param>
+            <param id="species" label="Species" value="ID"></param>
+            <param id="weight" label="Weight" value="weight"></param>
+        </parameters>
+        <categories>
+            <category value="setosa" label="Setosa"></category>
+            <category value="versicolor" label="Versicolor"></category>
+            <category value="virginica" label="Virginica"></category>
+        </categories>
     </data>
     <visualizer>
         <view type="scatter"></view>
         <title value="Scatter plot of Iris petal parameters"></title>
-		<xlabel value="Petal Length"></xlabel>
-		<ylabel value="Petal Width"></ylabel>		
+        <xlabel value="Petal Length"></xlabel>
+        <ylabel value="Petal Width"></ylabel>
     </visualizer>
 </model>
-

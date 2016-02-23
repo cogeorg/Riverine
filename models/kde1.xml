@@ -1,20 +1,19 @@
-<?xml version="1.0" encoding="ISO-8859-15"?>
+<?xml version="1.0" encoding="ISO-8859-15" ?>
 
 <model>
     <data>
         <file value="models/data/kde1.csv"></file>
         <column_names value="True"></column_names>
-        	<parameters>
-        	     <param id="risk A" label="Risk Score A" value="null"></param>     	     
-        	</parameters>
-        	<categories>
-        	</categories>
+        <parameters>
+            <param id="risk A" label="Risk Score A" value="null"></param>
+        </parameters>
+        <categories>
+        </categories>
     </data>
     <visualizer>
         <view type="kde"></view>
         <title value="KDE Estimation"></title>
-		<xlabel value="Risk Score"></xlabel>
-		<ylabel value="P(Risk Score)"></ylabel>		
+        <xlabel value="Risk Score"></xlabel>
+        <ylabel value="P(Risk Score)"></ylabel>
     </visualizer>
 </model>
-

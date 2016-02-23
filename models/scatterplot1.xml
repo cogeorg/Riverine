@@ -1,25 +1,24 @@
-<?xml version="1.0" encoding="ISO-8859-15"?>
+<?xml version="1.0" encoding="ISO-8859-15" ?>
 
 <model>
     <data>
         <file value="models/data/scatterplot1.csv"></file>
         <column_names value="True"></column_names>
-        	<parameters>
-        	     <param id="sepal length" label="Sepal Length" value="xaxis"></param>
-        	     <param id="sepal width" label="Sepal Width" value="yaxis"></param>
-        	     <param id="species" label="Species" value="ID"></param>
-        	</parameters>
-        	<categories>
-        	     <category value="setosa" label="Setosa"></category>	
-        	     <category value="versicolor" label="Versicolor"></category>
-        	     <category value="virginica" label="Virginica"></category>
-        	</categories>
+        <parameters>
+            <param id="sepal length" label="Sepal Length" value="xaxis"></param>
+            <param id="sepal width" label="Sepal Width" value="yaxis"></param>
+            <param id="species" label="Species" value="ID"></param>
+        </parameters>
+        <categories>
+            <category value="setosa" label="Setosa"></category>
+            <category value="versicolor" label="Versicolor"></category>
+            <category value="virginica" label="Virginica"></category>
+        </categories>
     </data>
     <visualizer>
         <view type="scatter"></view>
         <title value="Scatter plot of Iris sepal parameters"></title>
-		<xlabel value="Sepal Length"></xlabel>
-		<ylabel value="Sepal Width"></ylabel>		
+        <xlabel value="Sepal Length"></xlabel>
+        <ylabel value="Sepal Width"></ylabel>
     </visualizer>
 </model>
-

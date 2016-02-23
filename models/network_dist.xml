@@ -1,21 +1,21 @@
-<?xml version="1.0" encoding="ISO-8859-15"?>
+<?xml version="1.0" encoding="ISO-8859-15" ?>
 
 <model>
     <data>
-<file value="models/data/network_dist.csv"></file>
+        <file value="models/data/network_dist.csv"></file>
 
         <column_names value="True"></column_names>
-            <parameters>
-                <param id="source" label="Source" value=""></param>
-                <param id="target" label="Target" value=""></param>
-                <param id="strength" label="Strength" value=""></param>
-                <param id="date" label="Date" value=""></param>
-                <param id="type" label="Category" value=""></param>
-            </parameters>
-            <categories>
-                <category value="A" label="Portfolio Similarity"></category>
-                <category value="B" label=""></category>
-            </categories>
+        <parameters>
+            <param id="source" label="Source" value=""></param>
+            <param id="target" label="Target" value=""></param>
+            <param id="strength" label="Strength" value=""></param>
+            <param id="date" label="Date" value=""></param>
+            <param id="type" label="Category" value=""></param>
+        </parameters>
+        <categories>
+            <category value="A" label="Portfolio Similarity"></category>
+            <category value="B" label=""></category>
+        </categories>
         <node_config>
             <node node_id="BCI" label="BCI" size="25.028667" x="563.6971" y="922.3048"></node>
             <node node_id="STANLIB" label="STANLIB" size="54.017883" x="41.54676" y="101.95021"></node>
@@ -55,5 +55,6 @@
     </data>
     <visualizer>
         <view type="network"></view>
-<title value="Portfolio Similarity (Euclidean distance)"></title>    </visualizer>
+        <title value="Portfolio Similarity (Euclidean distance)"></title>
+    </visualizer>
 </model>
