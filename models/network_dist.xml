@@ -2,7 +2,7 @@
 
 <model>
     <data>
-<file value="models/2015-07-17_dist.csv"></file>
+<file value="models/data/network_dist.csv"></file>
 
         <column_names value="True"></column_names>
             <parameters>

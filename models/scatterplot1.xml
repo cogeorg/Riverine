@@ -2,7 +2,7 @@
 
 <model>
     <data>
-        <file value="models/model_scatterplot1.csv"></file>
+        <file value="models/data/scatterplot1.csv"></file>
         <column_names value="True"></column_names>
         	<parameters>
         	     <param id="sepal length" label="Sepal Length" value="xaxis"></param>

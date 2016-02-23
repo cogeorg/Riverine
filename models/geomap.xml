@@ -2,7 +2,7 @@
 
 <model>
     <data>
-        <file value="models/model_geomap.csv"></file>
+        <file value="models/data/geomap.csv"></file>
         <column_names value="True"></column_names>
         	<parameters>
         	     <param id="country" label="Country" value="xaxis"></param>

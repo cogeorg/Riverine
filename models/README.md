@@ -1,3 +1,3 @@
-Folder contains fake data and corresponding config files that will be visualized by SDE.
+Folder contains config files in `xml` format that steer the models to be visualized by SDE. They are called by [`layout.html`](../templates/layout.html).
 
-`.xml` files are used to load the data. They are called by [`layout.html`](../templates/layout.html).
+[`data`](data) contains the corresponding fake data.

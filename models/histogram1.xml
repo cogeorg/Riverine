@@ -2,7 +2,7 @@
 
 <model>
     <data>
-        <file value="models/model_histogram.csv"></file>
+        <file value="models/data/histogram1.csv"></file>
         <column_names value="True"></column_names>
         	<parameters>
         	     <param id="risk A" label="Risk Score A" value="null"></param>     	     

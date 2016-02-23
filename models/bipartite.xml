@@ -2,7 +2,7 @@
 
 <model>
     <data>
-        <file value="models/model_bipartite.csv"></file>
+        <file value="models/data/bipartite.csv"></file>
         <column_names value="True"></column_names>
         	<parameters>
         	     <param id="Unit Trust" label="Unit Trust" value="null"></param>

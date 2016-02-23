@@ -2,7 +2,7 @@
 
 <model>
     <data>
-        <file value="models/model_candlestick.csv"></file>
+        <file value="models/data/candlestick.csv"></file>
         <column_names value="True"></column_names>
         	<parameters>
         	     <param id="date" label="Date" value="null"></param>

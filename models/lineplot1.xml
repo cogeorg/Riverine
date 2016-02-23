@@ -2,7 +2,7 @@
 
 <model>
     <data>
-        <file value="models/model_lineplot1.csv"></file>
+        <file value="models/data/barplot_lineplot.csv"></file>
         <column_names value="True"></column_names>
         	<parameters>
         	     <param id="year" label="Year" value="xaxis"></param>
