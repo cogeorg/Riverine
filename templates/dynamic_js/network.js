@@ -2,7 +2,6 @@
     modelData = {{modelData|tojson|safe}};
     conf_obj = {{conf_obj|tojson|safe}};
     categories = {{categories|tojson|safe}};
-    generateNodePositions = {{generateNodePositions|tojson|safe}}  
     
     visualization = d3plus.viz();
     searchNode_dropdown = d3plus.form();
@@ -28,9 +27,7 @@
         visualization.id("node_id")  
         visualization.size("size")
         console.log(modelData)
-        if (generateNodePositions==false){
-            visualization.nodes(modelData.nodes);                      
-        }
+        visualization.nodes(modelData.nodes);
         visualization.edges({
           "arrows": 0,
           "value": modelData.edges

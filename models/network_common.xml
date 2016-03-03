@@ -17,40 +17,40 @@
             <category value="B" label=""></category>
         </categories>
         <node_config>
-            <node node_id="BCI" label="BCI" size="84.28572" x="632.6091" y="-52.265415"></node>
-            <node node_id="STANLIB" label="STANLIB" size="114.99999" x="-19.083931" y="-273.7093"></node>
-            <node node_id="RECM" label="RECM" size="40.0" x="-771.5098" y="-162.13518"></node>
-            <node node_id="EFFICIENT" label="EFFICIENT" size="25.0" x="-773.8366" y="-452.40897"></node>
-            <node node_id="SIM" label="SIM" size="112.14285" x="-403.35638" y="210.10645"></node>
-            <node node_id="GRYPHON" label="GRYPHON" size="25.0" x="-587.96375" y="-720.0668"></node>
-            <node node_id="TRUFFLE" label="TRUFFLE" size="25.0" x="891.6349" y="432.97894"></node>
-            <node node_id="SELECT" label="SELECT" size="61.42857" x="163.49786" y="149.1503"></node>
-            <node node_id="DISCOVERY" label="DISCOVERY" size="106.42857" x="-9.342693" y="525.72437"></node>
-            <node node_id="OLD" label="OLD" size="150.0" x="409.08954" y="276.9737"></node>
-            <node node_id="MARRIOT" label="MARRIOT" size="78.57143" x="607.6904" y="-752.5156"></node>
-            <node node_id="NEWFUNDS" label="NEWFUNDS" size="25.0" x="952.5765" y="53.665577"></node>
-            <node node_id="PIC" label="PIC" size="78.57143" x="-323.51514" y="-785.42676"></node>
-            <node node_id="ALLAN" label="ALLAN" size="25.0" x="831.5791" y="-412.85046"></node>
-            <node node_id="COMMUNITY" label="COMMUNITY" size="61.42857" x="236.01561" y="491.09656"></node>
-            <node node_id="CADIZ" label="CADIZ" size="110.0" x="232.91603" y="-65.80488"></node>
-            <node node_id="OASIS" label="OASIS" size="25.0" x="759.7734" y="-578.12756"></node>
-            <node node_id="ABSA" label="ABSA" size="50.0" x="-800.6931" y="336.31018"></node>
-            <node node_id="ASHBURTON" label="ASHBURTON" size="86.42857" x="196.74057" y="-405.445"></node>
-            <node node_id="MOMENTUM" label="MOMENTUM" size="124.99999" x="-65.94456" y="86.537895"></node>
-            <node node_id="PRIME" label="PRIME" size="45.0" x="462.7874" y="-53.43534"></node>
-            <node node_id="CARTESIAN" label="CARTESIAN" size="25.0" x="-301.0273" y="-926.87054"></node>
-            <node node_id="GLACIER" label="GLACIER" size="74.285706" x="-182.42212" y="347.36206"></node>
-            <node node_id="COLOURFIELD" label="COLOURFIELD" size="28.571428" x="111.340805" y="-897.7638"></node>
-            <node node_id="PRESCIENT" label="PRESCIENT" size="110.0" x="-349.10663" y="-384.46112"></node>
-            <node node_id="HOLLARD" label="HOLLARD" size="110.0" x="-574.78436" y="-120.19573"></node>
-            <node node_id="CITADEL" label="CITADEL" size="82.14285" x="-125.62942" y="-955.25916"></node>
-            <node node_id="PRUDENTIAL" label="PRUDENTIAL" size="88.57143" x="38.118267" y="-580.588"></node>
-            <node node_id="CORONATION" label="CORONATION" size="99.28571" x="-291.42694" y="-104.31415"></node>
-            <node node_id="INV" label="INV" size="25.0" x="57.80323" y="984.70636"></node>
-            <node node_id="PSG" label="PSG" size="107.85714" x="440.2992" y="-309.44568"></node>
-            <node node_id="US" label="US" size="25.0" x="-791.00775" y="470.3534"></node>
-            <node node_id="INVESTEC" label="INVESTEC" size="80.0" x="93.636185" y="321.9655"></node>
-            <node node_id="NEDBANK" label="NEDBANK" size="84.28572" x="277.64218" y="-597.8632"></node>
+            <node node_id="BCI" label="BCI" size="84.28572"></node>
+            <node node_id="STANLIB" label="STANLIB" size="114.99999"></node>
+            <node node_id="RECM" label="RECM" size="40.0"></node>
+            <node node_id="EFFICIENT" label="EFFICIENT" size="25.0"></node>
+            <node node_id="SIM" label="SIM" size="112.14285"></node>
+            <node node_id="GRYPHON" label="GRYPHON" size="25.0"></node>
+            <node node_id="TRUFFLE" label="TRUFFLE" size="25.0"></node>
+            <node node_id="SELECT" label="SELECT" size="61.42857"></node>
+            <node node_id="DISCOVERY" label="DISCOVERY" size="106.42857"></node>
+            <node node_id="OLD" label="OLD" size="150.0"></node>
+            <node node_id="MARRIOT" label="MARRIOT" size="78.57143"></node>
+            <node node_id="NEWFUNDS" label="NEWFUNDS" size="25.0"></node>
+            <node node_id="PIC" label="PIC" size="78.57143"></node>
+            <node node_id="ALLAN" label="ALLAN" size="25.0"></node>
+            <node node_id="COMMUNITY" label="COMMUNITY" size="61.42857"></node>
+            <node node_id="CADIZ" label="CADIZ" size="110.0"></node>
+            <node node_id="OASIS" label="OASIS" size="25.0"></node>
+            <node node_id="ABSA" label="ABSA" size="50.0"></node>
+            <node node_id="ASHBURTON" label="ASHBURTON" size="86.42857"></node>
+            <node node_id="MOMENTUM" label="MOMENTUM" size="124.99999"></node>
+            <node node_id="PRIME" label="PRIME" size="45.0"></node>
+            <node node_id="CARTESIAN" label="CARTESIAN" size="25.0"></node>
+            <node node_id="GLACIER" label="GLACIER" size="74.285706"></node>
+            <node node_id="COLOURFIELD" label="COLOURFIELD" size="28.571428"></node>
+            <node node_id="PRESCIENT" label="PRESCIENT" size="110.0"></node>
+            <node node_id="HOLLARD" label="HOLLARD" size="110.0"></node>
+            <node node_id="CITADEL" label="CITADEL" size="82.14285"></node>
+            <node node_id="PRUDENTIAL" label="PRUDENTIAL" size="88.57143"></node>
+            <node node_id="CORONATION" label="CORONATION" size="99.28571"></node>
+            <node node_id="INV" label="INV" size="25.0"></node>
+            <node node_id="PSG" label="PSG" size="107.85714"></node>
+            <node node_id="US" label="US" size="25.0"></node>
+            <node node_id="INVESTEC" label="INVESTEC" size="80.0"></node>
+            <node node_id="NEDBANK" label="NEDBANK" size="84.28572"></node>
         </node_config>
     </data>
     <visualizer>
