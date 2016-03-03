@@ -1,4 +1,4 @@
-<script type="text/javascript">
+<script>
     modelData = {{modelData|tojson|safe}};
     conf_obj = {{conf_obj|tojson|safe}};
     categories = {{categories|tojson|safe}};
@@ -11,7 +11,8 @@
         searchNode_dropdown.data(modelData.nodes);
         searchNode_dropdown.id("node_id")
         searchNode_dropdown.text("label")
-        searchNode_dropdown.title({"value":"View node:", "font": {"align": "right", "color":"#0000ff"}});
+        searchNode_dropdown.title({"value":"View node:",
+            "font": {"align": "right", "color":"#0000ff"}});
         searchNode_dropdown.type("drop");
         searchNode_dropdown.width(150);
         searchNode_dropdown.search(true); 
@@ -44,8 +45,8 @@
     }
 
     function refresh_viz(_visualization, filtered, selection){
-        _visualization.id({"value": "node_id", "solo": selection.nodes}); // key for which our data is unique on
-        _visualization.data(filtered.nodes); // data to use with the visualization        
+        _visualization.id({"value": "node_id", "solo": selection.nodes});
+        _visualization.data(filtered.nodes);
         _visualization.size("size")
 
         var val = new Object;
@@ -59,14 +60,11 @@
         val.value = filtered.edges;
 
         _visualization.edges(val);  
-        //_visualization.text("label");
         _visualization.draw(); // render the visualization!
 
         searchNode_dropdown.data(filtered.nodes);
-        //searchNode_dropdown.id({"value": "node_id", "solo": selection.nodes});
         //searchNode_dropdown.focus(false);
         searchNode_dropdown.draw();
-
     }
     
     function _eval(selection,edge){
@@ -112,8 +110,8 @@
         return filtered;
     }
     
-    //The following function gets the range  (min,max) from data
-    //Typical use = range_edges
+    // The following function gets the range (min,max) from data
+    // Typical use = range_edges
     function getRange(data, key){
         var range = new Object;
         range.min = Number(d3.min(data, function(d) { return d[key]; }));

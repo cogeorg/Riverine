@@ -1,7 +1,7 @@
-<script type="text/javascript" src="{{ url_for('static', filename='js/topojson.js') }}">
+<script src="{{ url_for('static', filename='js/topojson.js') }}">
 </script>
 
-<script type="text/javascript">
+<script>
     modelData = {{modelData|tojson|safe}};
     conf_obj = {{conf_obj|tojson|safe}};
     coords = {{coords|tojson|safe}};
@@ -18,15 +18,12 @@
         _visualization.container("#viz"); // container DIV to hold the visualization
         _visualization.type("geo_map") // visualization type
         //.title({"value": categories[id_index]["label"], "position": "top"});
-    
         _visualization.data(_data); // data to use with the visualization
         _visualization.id("code") // key for which our data is unique on
         _visualization.color(categories[id_index]["key"]);
         _visualization.tooltip(categories[id_index]["key"]);
-    
         _visualization.text("country") // key to use for display text
         _visualization.coords(coords)
-    
         _visualization.height(500) //set the height (in pixels) of the current output -default is 600
         _visualization.width(700)
         _visualization.legend({"value":true, "size":20, "icons":true})
@@ -34,15 +31,12 @@
     }
     
     function refresh_viz(_visualization, _data){
-    
         _visualization.data(_data); // data to use with the visualization
         _visualization.id("code"); // key for which our data is unique on
         _visualization.color(categories[id_index]["key"]);
         _visualization.tooltip(categories[id_index]["key"]);
-    
         _visualization.text("country"); // key to use for display text
         _visualization.coords(coords);
-    
         _visualization.draw(); // render the visualization!
     }
     
