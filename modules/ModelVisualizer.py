@@ -1,23 +1,12 @@
-# -*- coding: utf-8 -*-
-
-from flask import render_template
-import xmltodict
-import numpy as np
-import ast
-import json
-from difflib import SequenceMatcher
 import sys
-import pdb
-import pandas
+import xmltodict
 
 
 # We use the Template Method design pattern to define the ModelVisualizer class
 class ModelVisualizer(object):
-    # define member variables
-    # define member functions
     def __init__(self): 
-        # class constructor
         self.config_obj = None
+
     def __del__(self):
         del self.config_obj
         
@@ -29,15 +18,17 @@ class ModelVisualizer(object):
             return False
 
     def find_min_max(self, dict_list, key):
-        _min,_max = sys.maxint,-sys.maxint-1
+        _min = sys.maxint
+        _max = -sys.maxint - 1
         for x in (item[key] for item in dict_list):
-            _min,_max = min(x,_min),max(x,_max)
-        return [_min,_max]
+            _min = min(x, _min)
+            _max = max(x, _max)
+        return [_min, _max]
 
-    def read_config_file(self, file):
+    def read_config_file(self, f):
         try:           
-            self.config_obj = xmltodict.parse(file)
+            self.config_obj = xmltodict.parse(f)
         except IOError:
-            print 'Unable to parse file.', file
+            print 'Unable to parse file', f
             return False
         return True

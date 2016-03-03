@@ -1,7 +1,9 @@
-# -*- coding: utf-8 -*-
-
-from ModelVisualizer import *
+import ast
 import pandas
+
+from flask import render_template
+
+from ModelVisualizer import ModelVisualizer
 
 
 class BipartiteVisualizer(ModelVisualizer):
@@ -12,14 +14,14 @@ class BipartiteVisualizer(ModelVisualizer):
         del self.config_obj
 
     def read_model_data(self):
-        modelData_filename = self.config_obj['model']['data']['file']['@value']
+        f = self.config_obj['model']['data']['file']['@value']
         try:
-            # read the data using information from xml configuration file
-            file_data = pandas.read_csv(modelData_filename, quotechar="'", skipinitialspace=True)
+            file_data = pandas.read_csv(f, quotechar="'",
+                skipinitialspace=True)
         except IOError:
-            print 'Unable to open data model file:', modelData_filename
+            print 'Unable to open data model file', f
             return False
-        # get the column headings from the xml config file
+        # Get column headings from xml config file
         self._parameters = self.config_obj['model']['data']['parameters']['param']
         self.param_keys = [] # column headings of csv data file
         self.headers = [] # corresponding labels of the column headings (for visualization purposes)
@@ -31,35 +33,34 @@ class BipartiteVisualizer(ModelVisualizer):
                 self.data_id = {'id': self._parameters[i]['@id'], 'column': i}
         tmp = self.config_obj['model']['data']['column_names']['@value']
         column_headings = ast.literal_eval(tmp)
-        # get the categories from the xml config file
+        # Get categories from xml config file
         self.categories = []
         self.categories_keys = []
         self.categories_labels = []
-        n = len(self.categories)
-        for i in range(n):
+        for i in range(len(self.categories)):
             self.categories_keys.append(self.categories[i]['@value'])
             self.categories_labels.append(self.categories[i]['@label'])
         numParams = len(self.param_keys)
         if len(file_data.loc[0,:]) != numParams:
-            print 'Column headings and parameters in the config file are inconsistent.'
+            print 'Column headings and parameters in config file inconsistent.'
             return False
         column_index = range(0,numParams)
         self.modelData = []
-        # load the bipartite data from the csv data file
+        # Load data from file_data into a list
         for row in range(len(file_data)):
             tmp = []
             for col in column_index:
-                value = file_data.loc[row,self.param_keys[col]]
+                value = file_data.loc[row, self.param_keys[col]]
                 tmp.append(value)
             self.modelData.append(tmp)
-                          
         if len(self.modelData) == 0:
             return False
         return True
 
     def render_plot(self):
-        self.js = render_template('dynamic_js/bipartite.js', conf_obj=self.config_obj, data_id = self.data_id,
-                        headers=self.headers, modelData=self.modelData)
-        self.plot = render_template('ModelVisualizer/bipartite.html', js = self.js,
-                        modelData = self.modelData)
+        self.js = render_template('dynamic_js/bipartite.js',
+            conf_obj=self.config_obj, data_id=self.data_id,
+            headers=self.headers, modelData=self.modelData)
+        self.plot = render_template('ModelVisualizer/bipartite.html',
+            js=self.js, modelData=self.modelData)
         return True

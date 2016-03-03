@@ -1,9 +1,12 @@
-# -*- coding: utf-8 -*-
-from ModelVisualizer import * 
-import networkx as nx
-from networkx.drawing.nx_agraph import graphviz_layout # workaround for bug in nx 1.10
+import ast
+import numpy as np
 import random
 
+import networkx as nx
+from flask import render_template
+from networkx.drawing.nx_agraph import graphviz_layout # workaround for bug in nx 1.10
+
+from ModelVisualizer import ModelVisualizer
 
 
 class NetworkVisualizer(ModelVisualizer):
@@ -14,18 +17,18 @@ class NetworkVisualizer(ModelVisualizer):
         del self.config_obj
 
     def read_model_data(self):
-        modelData_filename = self.config_obj['model']['data']['file']['@value']
+        f = self.config_obj['model']['data']['file']['@value']
         try:
-            file_data = np.genfromtxt(modelData_filename, delimiter=',', dtype=None)
+            file_data = np.genfromtxt(f, delimiter=',', dtype=None)
         except IOError:
-            print 'Unable to open data model file:', modelData_filename
+            print 'Unable to open data model file', f
             return False
-        # get the column headings from the xml config file
+        # Get column headings from the xml config file
         self._parameters = self.config_obj['model']['data']['parameters']['param']
         self.param_keys = [self._parameters[i]['@id'] for i in range(len(self._parameters))]
         tmp = self.config_obj['model']['data']['column_names']['@value']
         column_headings = ast.literal_eval(tmp)
-        # get the categories from the xml config file
+        # Get categories from the xml config file
         self.categories = self.config_obj['model']['data']['categories']['category']
         self.categories_keys = [self.categories[i]['@value'] for i in range(len(self.categories))]
         self.categories_labels = [self.categories[i]['@label'] for i in range(len(self.categories))]
@@ -33,20 +36,22 @@ class NetworkVisualizer(ModelVisualizer):
         if len(file_data[0]) != numParams:
             print 'Column headings and parameters in config file inconsistent'
             return False
-        column_index = range(0,numParams)
+        column_index = range(0, numParams)
         if column_headings:
-            row_index = range(1,len(file_data))
+            row_index = range(1, len(file_data))
         else:
-            row_index = range(0,len(file_data))
+            row_index = range(0, len(file_data))
         self.modelData = {'nodes': [], 'edges': []}
-        # load node_data from xml configuration file
+        # Load node_data from xml configuration file
         node_data = self.config_obj['model']['data']['node_config']['node']
         if len(node_data) == 0:
             print 'No node data found in configuration file'
             return False
-        # take structure of first key as default
+        # Load node_data from the csv data file
+        # (assume structure of first key to be default)
         _node_keys = node_data[0].keys()
-        self.node_keys = [key.encode('utf-8').translate(None, '@') for key in _node_keys]
+        self.node_keys = [key.encode('utf-8').translate(None, '@')
+            for key in _node_keys]
         for node in node_data:
             tmp = {}
             for i in range(len(self.node_keys)):
@@ -56,7 +61,7 @@ class NetworkVisualizer(ModelVisualizer):
                 tmp.update({self.node_keys[i]: value})
             self.modelData['nodes'].append(tmp)
         first_node = self.modelData['nodes'][0]
-        # load connection_data from the csv data file
+        # Load connection data from file_data
         for row in row_index:
             tmp = {};
             for col in column_index:
@@ -84,10 +89,11 @@ class NetworkVisualizer(ModelVisualizer):
         return True
 
     def render_plot(self):
-        self.js = render_template('dynamic_js/network.js', conf_obj=self.config_obj,
-                        categories=self.categories, modelData=self.modelData)
-        self.plot = render_template('ModelVisualizer/network.html', js=self.js, 
-                        modelData=self.modelData, categories=self.categories)
+        self.js = render_template('dynamic_js/network.js',
+            conf_obj=self.config_obj, categories=self.categories,
+            modelData=self.modelData)
+        self.plot = render_template('ModelVisualizer/network.html',
+            js=self.js, modelData=self.modelData, categories=self.categories)
         return True
 
     def debug_mode(self, param, generateNodePos_server=True):
@@ -95,26 +101,28 @@ class NetworkVisualizer(ModelVisualizer):
         if generateNodePos_server:
             pos = graphviz_layout(G)
         self.modelData = {'nodes': [], 'edges': []}
-        # store nodes in self.modelData['nodes']
-        node_data = [n for n,d in G.nodes_iter(data=True)]
+        # Store nodes in self.modelData['nodes']
+        node_data = [n for n in G.nodes_iter()]
         for n in node_data:
-            tmp= {'node_id': str(n), 'label': str(n), 
-                  'size': random.uniform(param['minNodeSize'], param['maxNodeSize'])}
+            tmp = {'node_id': str(n), 'label': str(n),
+                   'size': random.uniform(param['minNodeSize'],
+                           param['maxNodeSize'])}
             if generateNodePos_server:
                 tmp.update({'x': pos[n][0], 'y': pos[n][1]})
             self.modelData['nodes'].append(tmp)
-        # store category information
+        # Store category information
         edgeTypes = param['edgeTypes']
         num_edgeTypes = len(edgeTypes)
         self.categories = []
         for e in edgeTypes:
              self.categories.append({'@value': e, '@label': e})
-        # store edge in self.modelData['edges']
+        # Store edge in self.modelData['edges']
         edge_data = list(G.edges_iter(data=False))
         for e in edge_data:
             tmp = {'source': str(e[0]), 'target': str(e[1]), 
-                   'strength': random.uniform(param['minEdgeStrength'], param['maxEdgeStrength']),
+                   'strength': random.uniform(param['minEdgeStrength'],
+                               param['maxEdgeStrength']),
                    'date': 2015, 
-                   'type': edgeTypes[random.randint(0,num_edgeTypes-1)]}
+                   'type': edgeTypes[random.randint(0, num_edgeTypes-1)]}
             self.modelData['edges'].append(tmp)
         return True

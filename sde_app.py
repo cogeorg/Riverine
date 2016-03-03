@@ -1,45 +1,44 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
+import datetime
 
+from flask import flash, Flask, g, request, redirect, url_for, render_template
+from flask.ext import login as flask_login
 from flask.ext.sqlalchemy import SQLAlchemy
-from flask import Flask, request, g, redirect, url_for, render_template, flash
-from werkzeug.security import generate_password_hash, check_password_hash
-from flask.ext.login import LoginManager, login_user, logout_user, current_user, login_required
-from datetime import datetime
-import pdb
-try:
-    import simplejson as json
-except ImportError:
-    import json
+from werkzeug.security import check_password_hash, generate_password_hash
+
 from modules import ModelVisualizerLib as MVLib
 
-# Create the application and initialize it with configuration from sde_app.cfg file
+
+# Create the application and initialize it with configuration
+# from sde_app.cfg file
 sde_app = Flask(__name__)
 sde_app.config.from_pyfile('sde_app.cfg')
 db = SQLAlchemy(sde_app)
 
-# To use Flask-Login, we need to instantiate LoginManager and initialize it with our application instance.
-# LoginManager contains the code that makes sde_app application and Flask-Login work together 
-login_manager = LoginManager()
+# To use Flask-Login, we need to instantiate LoginManager and
+# initialize it with our application instance.  LoginManager contains the
+# code that makes sde_app application and Flask-Login work together.
+login_manager = flask_login.LoginManager()
 login_manager.init_app(sde_app)
 
 # Assign a view handler to respond to login requests from client side
 login_manager.login_view = 'login' 
 
 
-# For authentication we need a User model class that will store the username and password associated with a user.
-# We extend the SQLAlchemy db.Model class 
+# For authentication we need a User model class that will store the
+# username and password associated with a user. We extend the
+# SQLAlchemy db.Model class 
 class User(db.Model):
     __tablename__ = "users"
-    id = db.Column('user_id', db.Integer, primary_key = True)
-    username = db.Column('username', db.String(50), unique = True, index = True)
+    id = db.Column('user_id', db.Integer, primary_key=True)
+    username = db.Column('username', db.String(50), unique=True, index=True)
     password = db.Column('password', db.String(50))
     registered_on = db.Column('registered_on', db.DateTime)
   
     def __init__(self, username, password):
         self.username = username
-        self.set_password(password) # Store hashed version of the password! Password should never be stored in plain text!!
-        self.registered_on = datetime.utcnow()
+        self.set_password(password) # Store hashed version of password
+        self.registered_on = datetime.datetime.utcnow()
 
     def set_password(self, password):
         self.password = generate_password_hash(password)
@@ -66,8 +65,9 @@ class User(db.Model):
 # Define function to Register new users
 # The register fuction responds to both GET and POST requests:
 #  GET:  render register.html 
-#  POST: handle registration request (when user submits the form) by storing data to database
-#        -after successful registration, the user will be redirected to the login page!
+#  POST: handle registration request (when user submits the form) by
+#        storing data to database.  After successful registration, the
+#        user will be redirected to the login page
 @sde_app.route('/register/', methods=['GET', 'POST'])
 def register():
     if request.method == 'GET':
@@ -81,7 +81,7 @@ def register():
 
 @sde_app.route('/', methods=['GET'])
 @sde_app.route('/index/', methods=['GET'])
-@login_required
+@flask_login.login_required
 def index():
     return render_template('index.html')
 
@@ -89,11 +89,11 @@ def index():
 # Define the route that will process the model file upload and visualize the 
 # corresponding model
 @sde_app.route('/upload/', methods=['GET', 'POST'])
-@login_required
+@flask_login.login_required
 def upload():
     if request.method == 'POST':
            
-        filename = request.values['sel_modelfile']        
+        filename = request.values['sel_modelfile']
         # Get name of the uploaded model file        
         if filename != '':
             try:           
@@ -152,20 +152,18 @@ def upload():
 
 # Debug function for test purposes
 @sde_app.route('/buildnetwork/', methods=['POST', 'GET'])
-@login_required
+@flask_login.login_required
 def buildnetwork():
     return render_template('buildnetwork.html')
     
 @sde_app.route('/debug_mode/', methods=['POST', 'GET'])
-@login_required
+@flask_login.login_required
 def debug_mode():
-    if request.method == 'POST':        
-        param = {}        
-        
+    if request.method == 'POST':
+        param = {}
         param.update({'nNodes': eval(request.values['nNodes'])}) # Warning: not checking for valid input can crash  
         param.update({'minNodeSize': eval(request.values['minSize'])})
         param.update({'maxNodeSize': eval(request.values['maxSize'])})
-
         param.update({'nEdges': eval(request.values['nEdges'])})        
         param.update({'minEdgeStrength': eval(request.values['minStrength'])})
         param.update({'maxEdgeStrength': eval(request.values['maxStrength'])})
@@ -204,28 +202,30 @@ def login():
     if not registered_user.check_password(password):
         flash('Password is invalid', 'error')
         return redirect(url_for('login'))
-    login_user(registered_user, remember = remember_me)
+    flask_login.login_user(registered_user, remember=remember_me)
     flash('Logged in successfully')
     return redirect(request.args.get('next') or url_for('index'))
 
 @sde_app.route('/logout/', methods=['GET'])
 def logout():
-    logout_user()
-    return redirect(url_for('login')) # Change 'login' to 'index' when 'index' is built!
+    flask_login.logout_user()
+    return redirect(url_for('index'))
 
 # Define user_loader_callback function.
 # This function loads the user from the database
 @login_manager.user_loader
 def load_user(id):
     return User.query.get(int(id))
-    # Note that IDs in Flask-Login are unicode strings, need to typecast them to ints for sqlquery
+    # Note that IDs in Flask-Login are unicode strings,
+    # need to typecast them to ints for sqlquery
 
 @sde_app.before_request
 def before_request():
-    g.user = current_user
-# Note:
-# The g object stores information for one request only and is available from within each function. 
-# Never store such things on other objects because this would not work with threaded environments.
+    g.user = flask_login.current_user
+    # Note:
+    # The g object stores information for one request only and is available
+    # from within each function.  Never store such things on other objects
+    # because this would not work with threaded environments.
 
 if __name__ == '__main__':
     sde_app.run(port=8000)
