@@ -1,31 +1,28 @@
-{% extends "layout.html"  %}
+{% extends "layout.html" %}
 
 {% block head %}
-<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/candlestick.css') }}"/>
-<script type="text/javascript" src="{{ url_for('static', filename='js/d3.tip.v0.6.3.js') }}"></script>
-<script type="text/javascript" src="{{ url_for('static', filename='js/candlestick.js') }}"></script>
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/candlestick.css') }}"/>
+  <script src="{{ url_for('static', filename='js/d3.tip.v0.6.3.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/candlestick.js') }}"></script>
 {% endblock %}
 
-{% block body  %} <!-- main panel for model visualization -->
+{% block body %} <!-- main panel for model visualization -->
+  <script src="{{ url_for('static', filename='js/d3.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/d3.tip.v0.6.3.js') }}"></script>
 
-<script src="{{ url_for('static', filename='js/d3.js') }}"></script>
-<script src="{{ url_for('static', filename='js/d3.tip.v0.6.3.js') }}"></script>
-            
-    <h2 class="page-header"><label id="lbl_page-header"></h2>
+  <h2 class="page-header"><label id="lbl_page-header"></h2>
 
-    <script type="text/javascript">
-        page_header = conf_obj["model"]["visualizer"]["title"]["@value"];
-        if ( page_header == ""){
-            page_header = "Candlestick";
-        }
-        document.getElementById("lbl_page-header").innerHTML = page_header;
+  <script>
+      page_header = conf_obj["model"]["visualizer"]["title"]["@value"];
+      if (page_header == "") {
+          page_header = "Candlestick";
+      }
+      document.getElementById("lbl_page-header").innerHTML = page_header;
+  </script>
 
-    </script>    
+  <div id="div_svg_candlestick">
+    <svg id="svg_candlestick"></svg>
+  </div>
 
-    <div id="div_svg_candlestick">
-        <svg id="svg_candlestick"></svg>
-    </div>
-
-    {{js|safe}}
-
+  {{js|safe}}
 {% endblock %} <!-- body block -->
