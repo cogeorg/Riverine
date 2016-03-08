@@ -124,6 +124,8 @@ def upload():
                 Viz = MVLib.GMV.GeomapVisualizer(Viz.config_obj)
             elif vizType == 'network':
                 Viz = MVLib.NMV.NetworkVisualizer(Viz.config_obj)
+            elif vizType == 'ring':
+                Viz = MVLib.RMV.RingVisualizer(Viz.config_obj)
             elif vizType == 'bipartite':
                 Viz = MVLib.BpMV.BipartiteVisualizer(Viz.config_obj)
             elif vizType == 'candlestick':

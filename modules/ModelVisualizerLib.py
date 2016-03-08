@@ -7,4 +7,5 @@ import KDEVisualizer as KDEMV
 import LineplotVisualizer as LMV
 import ModelVisualizer as MV
 import NetworkVisualizer as NMV
+import RingVisualizer as RMV
 import ScatterplotVisualizer as SMV

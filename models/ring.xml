@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="ISO-8859-15" ?>
+
+<model>
+    <data>
+        <file value="models/data/ring.csv"></file>
+
+        <column_names value="True"></column_names>
+        <parameters>
+            <param id="source" label="Source" value=""></param>
+            <param id="target" label="Target" value=""></param>
+            <param id="strength" label="Strength" value=""></param>
+        </parameters>
+        <node_config>
+            <node node_id="STANLIB" label="STANLIB" size="150.0"></node>
+            <node node_id="RECM" label="RECM" size="37.3577"></node>
+            <node node_id="SIM" label="SIM" size="31.227638"></node>
+            <node node_id="GRYPHON" label="GRYPHON" size="26.252329"></node>
+            <node node_id="TRUFFLE" label="TRUFFLE" size="26.924456" y="7.0817943E-4"></node>
+            <node node_id="DISCOVERY" label="DISCOVERY" size="30.759008"></node>
+            <node node_id="OLD" label="OLD" size="30.741852"></node>
+            <node node_id="MARRIOT" label="MARRIOT" size="25.609005"></node>
+            <node node_id="NEWFUNDS" label="NEWFUNDS" size="26.987864"></node>
+            <node node_id="ALLAN" label="ALLAN" size="36.155148"></node>
+            <node node_id="CADIZ" label="CADIZ" size="25.51241"></node>
+            <node node_id="OASIS" label="OASIS" size="32.78568"></node>
+            <node node_id="ABSA" label="ABSA" size="25.598557"></node>
+            <node node_id="ASHBURTON" label="ASHBURTON" size="35.988285"></node>
+            <node node_id="MOMENTUM" label="MOMENTUM" size="42.731827"></node>
+            <node node_id="GLACIER" label="GLACIER" size="28.423065"></node>
+            <node node_id="COLOURFIELD" label="COLOURFIELD" size="27.602673"></node>
+            <node node_id="PRESCIENT" label="PRESCIENT" size="38.203903"></node>
+            <node node_id="HOLLARD" label="HOLLARD" size="26.994852"></node>
+            <node node_id="CITADEL" label="CITADEL" size="25.49462"></node>
+            <node node_id="PRUDENTIAL" label="PRUDENTIAL" size="103.541084"></node>
+            <node node_id="CORONATION" label="CORONATION" size="88.23627"></node>
+            <node node_id="PSG" label="PSG" size="31.453278"></node>
+            <node node_id="US" label="US" size="25.598557"></node>
+            <node node_id="INVESTEC" label="INVESTEC" size="52.709"></node>
+            <node node_id="NEDBANK" label="NEDBANK" size="32.51701"></node>
+        </node_config>
+    </data>
+    <visualizer>
+        <view type="ring"></view>
+        <title value="Portfolio Similarity (Common Exposures)"></title>
+    </visualizer>
+</model>
