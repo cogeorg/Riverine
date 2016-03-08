@@ -58,12 +58,11 @@ class RingVisualizer(ModelVisualizer):
                     value = ast.literal_eval(value)
                 tmp.update({self.node_keys[i]: value})
             self.modelData['nodes'].append(tmp)
-        # Load connection data from the csv data file
-        for row in row_index:
-            tmp = {};
-            for col in column_index:
-                value = file_data.iloc[row, col]
-                tmp.update({self.param_keys[col]: value})
+        # Load connection data from file_data
+        G = nx.from_pandas_dataframe(file_data, 'source', 'target', True)
+        for s, t, d in G.edges(data=True):
+            tmp = {'source': s, 'target': t}
+            tmp.update(d)
             self.modelData['edges'].append(tmp)
         if len(self.modelData['edges']) == 0:
             print 'No edge data found in configuration file'

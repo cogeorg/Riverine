@@ -63,11 +63,10 @@ class NetworkVisualizer(ModelVisualizer):
             self.modelData['nodes'].append(tmp)
         first_node = self.modelData['nodes'][0]
         # Load connection data from file_data
-        for row in row_index:
-            tmp = {};
-            for col in column_index:
-                value = file_data.iloc[row, col]
-                tmp.update({self.param_keys[col]:value})
+        G = nx.from_pandas_dataframe(file_data, 'source', 'target', True)
+        for s, t, d in G.edges(data=True):
+            tmp = {'source': s, 'target': t}
+            tmp.update(d)
             self.modelData['edges'].append(tmp)
         if len(self.modelData['edges']) == 0:
             print 'No edge data found in configuration file'
@@ -76,10 +75,6 @@ class NetworkVisualizer(ModelVisualizer):
         # for small networks we can calculate them here or provide them
         # d3plus can also calculate them but positions will be random
         if not ('x' in first_node and 'y' in first_node):
-            G = nx.Graph()
-            edges = [(edge['source'], edge['target'], edge['strength'])
-                     for edge in self.modelData['edges']]
-            G.add_weighted_edges_from(edges)
             pos = graphviz_layout(G)
             for entry in self.modelData['nodes']:
                 node = entry['node_id']
