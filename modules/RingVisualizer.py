@@ -1,5 +1,5 @@
 import ast
-import numpy as np
+import pandas
 import random
 
 import networkx as nx
@@ -19,7 +19,8 @@ class RingVisualizer(ModelVisualizer):
     def read_model_data(self):
         f = self.config_obj['model']['data']['file']['@value']
         try:
-            file_data = np.genfromtxt(f, delimiter=',', dtype=None)
+            file_data = pandas.read_csv(f, quotechar="'",
+                skipinitialspace=True)
         except IOError:
             print 'Unable to open data model file', f
             return False
@@ -30,7 +31,7 @@ class RingVisualizer(ModelVisualizer):
         column_headings = ast.literal_eval(tmp)
         # Here we don't need categories in the xml config file
         numParams = len(self.param_keys)
-        if len(file_data[0]) != numParams:
+        if len(file_data.loc[0,:]) != numParams:
             print 'Column headings and parameters in config file inconsistent'
             return False
         column_index = range(0, numParams)
@@ -61,9 +62,7 @@ class RingVisualizer(ModelVisualizer):
         for row in row_index:
             tmp = {};
             for col in column_index:
-                value = file_data[row][col]
-                if self.is_number(value):
-                    value = ast.literal_eval(value)
+                value = file_data.iloc[row, col]
                 tmp.update({self.param_keys[col]: value})
             self.modelData['edges'].append(tmp)
         if len(self.modelData['edges']) == 0:
